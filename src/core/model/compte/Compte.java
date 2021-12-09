@@ -66,16 +66,16 @@ public class Compte {
 		this.idClient = idClient;
 	}
 	
-	public void debiter(double montant) throws MontantNonValide {
+	public void debiter(double montant) throws MontantNonValideException {
 		if(montant>this.getSolde() || montant < 0) {
-			throw new MontantNonValide();
+			throw new MontantNonValideException();
 		}
 		this.setSolde(this.getSolde() -montant);
 	}
 	
-	public void crediter(double montant) throws MontantNonValide {
+	public void crediter(double montant) throws MontantNonValideException {
 		if(montant < 0) {
-			throw new MontantNonValide();
+			throw new MontantNonValideException();
 		}
 		this.setSolde(this.getSolde() + montant);
 	}

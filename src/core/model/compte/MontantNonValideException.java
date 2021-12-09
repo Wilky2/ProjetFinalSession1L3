@@ -1,9 +1,9 @@
 package core.model.compte;
 
-public class MontantNonValide extends Exception{
+public class MontantNonValideException extends Exception{
 	private String message;
 	
-	public MontantNonValide() {
+	public MontantNonValideException() {
 		this.message = "Montant non valide";
 	}
 
