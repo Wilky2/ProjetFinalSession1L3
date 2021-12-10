@@ -4,13 +4,13 @@ public class Client {
 	private int idClient;
 	private String nom;
 	private String prenom;
-	private String type;
+	private TypeClient type;
 	private Sexe sexe;
 	private String adresse;
 	private String nif;
 	private String telephone;
 	
-	public Client(int idClient, String nom, String prenom, String type, Sexe sexe, String adresse, String nif,
+	public Client(int idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse, String nif,
 			String telephone) {
 		super();
 		this.idClient = idClient;
@@ -23,7 +23,7 @@ public class Client {
 		this.telephone = telephone;
 	}
 
-	public Client(int idClient, String nom, String prenom, String type, Sexe sexe, String adresse) {
+	public Client(int idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse) {
 		super();
 		this.idClient = idClient;
 		this.nom = nom;
@@ -57,11 +57,11 @@ public class Client {
 		this.prenom = prenom;
 	}
 
-	public String getType() {
+	public TypeClient getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(TypeClient type) {
 		this.type = type;
 	}
 

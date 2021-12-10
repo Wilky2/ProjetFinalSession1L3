@@ -1,22 +1,36 @@
 package core.model.compte;
 
+import core.model.client.Client;
+
 public class Compte {
 	private int numero;
 	private TypeCompte type;
 	private Devise devise;
 	private double solde;
 	private Etat etat;
-	private int idClient;
+	private Client proprietaire;
 	
-	public Compte(int numero, TypeCompte type, Devise devise, double solde, Etat etat, int idClient) {
+	public Compte(int numero, TypeCompte type, Devise devise, double solde, Etat etat, Client proprietaire) {
 		super();
 		this.numero = numero;
 		this.type = type;
 		this.devise = devise;
 		this.solde = solde;
 		this.etat = etat;
-		this.idClient = idClient;
+		this.proprietaire = proprietaire;
 	}
+
+	public Compte(int numero, TypeCompte type, Devise devise, double solde, Etat etat) {
+		super();
+		this.numero = numero;
+		this.type = type;
+		this.devise = devise;
+		this.solde = solde;
+		this.etat = etat;
+		this.proprietaire = null;
+	}
+
+
 
 	public int getNumero() {
 		return numero;
@@ -57,15 +71,15 @@ public class Compte {
 	public void setEtat(Etat etat) {
 		this.etat = etat;
 	}
-
-	public int getIdClient() {
-		return idClient;
-	}
-
-	public void setIdClient(int idClient) {
-		this.idClient = idClient;
-	}
 	
+	public Client getProprietaire() {
+		return proprietaire;
+	}
+
+	public void setProprietaire(Client proprietaire) {
+		this.proprietaire = proprietaire;
+	}
+
 	public void debiter(double montant) throws MontantNonValideException {
 		if(montant>this.getSolde() || montant < 0) {
 			throw new MontantNonValideException();
