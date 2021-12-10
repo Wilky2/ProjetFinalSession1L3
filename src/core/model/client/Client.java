@@ -10,8 +10,7 @@ public class Client {
 	private String nif;
 	private String telephone;
 	
-	public Client(int idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse, String nif,
-			String telephone) {
+	public Client(int idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse, String nif,String telephone) {
 		super();
 		this.idClient = idClient;
 		this.nom = nom;
@@ -31,6 +30,8 @@ public class Client {
 		this.type = type;
 		this.sexe = sexe;
 		this.adresse = adresse;
+		this.nif = null;
+		this.telephone = null;
 	}
 
 	public int getIdClient() {

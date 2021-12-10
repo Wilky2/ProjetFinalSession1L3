@@ -4,7 +4,8 @@ import java.util.Date;
 
 import core.model.compte.Compte;
 import core.model.compte.Etat;
-import core.model.compte.MontantNonValideException;
+import core.model.exception.CompteNonValideException;
+import core.model.exception.MontantNonValideException;
 
 public class Transfert extends Transaction {
 	
@@ -17,7 +18,7 @@ public class Transfert extends Transaction {
 	
 
 	public Transfert(int idTransaction, Date dateTransaction,Compte compteDebiteur,double montantDebiteur,Compte compteCrediteur,double montantCrediteur,String description) {
-		super(idTransaction, dateTransaction);
+		super(idTransaction, dateTransaction,TypeTransaction.retrait);
 		this.compteDebiteur = compteDebiteur;
 		this.montantDebiteur = montantDebiteur;
 		this.compteCrediteur = compteCrediteur;

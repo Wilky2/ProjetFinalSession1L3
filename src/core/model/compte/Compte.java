@@ -1,6 +1,7 @@
 package core.model.compte;
 
 import core.model.client.Client;
+import core.model.exception.MontantNonValideException;
 
 public class Compte {
 	private int numero;

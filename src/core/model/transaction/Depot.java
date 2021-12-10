@@ -4,7 +4,8 @@ import java.util.Date;
 
 import core.model.compte.Compte;
 import core.model.compte.Etat;
-import core.model.compte.MontantNonValideException;
+import core.model.exception.CompteNonValideException;
+import core.model.exception.MontantNonValideException;
 
 public class Depot extends Transaction {
 	
@@ -16,7 +17,7 @@ public class Depot extends Transaction {
 	
 
 	public Depot(int idTransaction, Date dateTransaction,Compte compte,double montant,String nomDeposant,String prenomDeposant) {
-		super(idTransaction, dateTransaction);
+		super(idTransaction, dateTransaction,TypeTransaction.depot);
 		this.compte = compte;
 		this.montant = montant;
 		this.nomDeposant = nomDeposant;

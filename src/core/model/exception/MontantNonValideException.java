@@ -1,4 +1,4 @@
-package core.model.compte;
+package core.model.exception;
 
 public class MontantNonValideException extends Exception{
 	private String message;

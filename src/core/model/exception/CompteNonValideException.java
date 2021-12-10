@@ -1,4 +1,4 @@
-package core.model.transaction;
+package core.model.exception;
 
 public class CompteNonValideException extends Exception {
 	
