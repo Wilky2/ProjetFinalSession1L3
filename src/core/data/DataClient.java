@@ -59,4 +59,18 @@ public class DataClient {
 				
 	}
 	
+	public void modifier(Client client) throws NoExist {
+		int indexIdClient = idClient.indexOf(client.getIdClient());
+		if(indexIdClient < 0 ) {
+			throw new NoExist();
+		}
+		idClient.set(indexIdClient, client.getIdClient());
+		nom.set(indexIdClient,client.getNom());
+		prenom.set(indexIdClient,client.getPrenom());
+		type.set(indexIdClient,client.getType());
+		sexe.set(indexIdClient,client.getSexe());
+		adresse.set(indexIdClient,client.getAdresse());
+		nif.set(indexIdClient,client.getNif());
+		telephone.set(indexIdClient,client.getTelephone());
+	}
 }

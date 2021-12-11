@@ -11,6 +11,7 @@ import core.model.transaction.Retrait;
 import core.model.transaction.TypeTransaction;
 
 public class DataTransaction {
+	
 	private ArrayList<Integer> idTransaction;
 	private ArrayList<Date> dateTransaction;
 	private ArrayList<TypeTransaction> type;
@@ -77,6 +78,34 @@ public class DataTransaction {
 		
 		}
 	}
+	
+	public void modifier(Transaction transaction) throws NoExist {
+		int indexIdTransaction = idTransaction.indexOf(transaction.getIdTransaction());
+		if(indexIdTransaction < 0) {
+			throw new NoExist();
+		}
+		TypeTransaction typeTransaction = transaction.getType();
+		idTransaction.set(indexIdTransaction, transaction.getIdTransaction());
+		dateTransaction.set(indexIdTransaction, transaction.getDateTransaction());
+		type.set(indexIdTransaction, typeTransaction);
+		
+		switch(typeTransaction) {
+		
+		case depot :{
+			DataDepot.dataDepot.modifier(indexIdTransaction,transaction);
+		}
+		
+		case transfert:{
+			DataTransfert.dataTransfert.modifier(indexIdTransaction,transaction);
+		}
+		
+		case retrait:{
+			DataRetrait.dataRetrait.modifier(indexIdTransaction,transaction);
+		}
+		
+		}
+		
+	}
 }	
 
 class DataDepot{
@@ -111,6 +140,13 @@ class DataDepot{
 				nomDeposant.get(index),
 				prenomDeposant.get(index)
 				);
+	}
+	
+	public void modifier(int index, Transaction transaction) {
+		idCompte.set(index,((Depot) transaction).getCompte().getNumero());
+		montant.set(index,((Depot) transaction).getMontant());
+		nomDeposant.set(index,((Depot) transaction).getNomDeposant());
+		prenomDeposant.set(index,((Depot) transaction).getPrenomDeposant());
 	}
 	
 	
@@ -154,6 +190,14 @@ class DataTransfert{
 				);
 	}
 	
+	public void modifier(int index,Transaction transaction) {
+		idCompteDebiteur.set(index,((Transfert) transaction).getCompteDebiteur().getNumero());
+		montantDebiteur.set(index,((Transfert) transaction).getMontantDebiteur());
+		idCompteCrediteur.set(index,((Transfert) transaction).getCompteCrediteur().getNumero());
+		montantCrediteur.set(index,((Transfert) transaction).getMontantCrediteur());
+		description.set(index,((Transfert) transaction).getDescription());
+	}
+	
 }
 
 class DataRetrait{
@@ -180,6 +224,11 @@ class DataRetrait{
 				DataCompte.dataCompte.rechercher(idCompte.get(index)),
 				montant.get(index)
 				);
+	}
+	
+	public void modifier(int index,Transaction transaction) {
+		idCompte.set(index,((Retrait) transaction).getCompte().getNumero());
+		montant.set(index,((Retrait) transaction).getMontant());
 	}
 	
 }

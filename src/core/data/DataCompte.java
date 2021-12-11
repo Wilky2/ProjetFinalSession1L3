@@ -58,4 +58,22 @@ public class DataCompte {
 				proprietaire
 				);
 	}
+	
+	public void modifier(Compte compte) throws NoExist {
+		int indexNumeroCompte = numeroCompte.indexOf(compte.getNumero());
+		if(indexNumeroCompte < 0) {
+			throw new NoExist();
+		}
+		numeroCompte.set(indexNumeroCompte, compte.getNumero());
+		type.set(indexNumeroCompte, compte.getType());
+		devise.set(indexNumeroCompte, compte.getDevise());
+		solde.set(indexNumeroCompte, compte.getSolde());
+		etat.set(indexNumeroCompte, compte.getEtat());
+		if(compte.getProprietaire() == null) {
+			idProprietaire.set(indexNumeroCompte, -1);
+		}
+		else {
+			idProprietaire.set(indexNumeroCompte, compte.getProprietaire().getIdClient());
+		}
+	}
 }
