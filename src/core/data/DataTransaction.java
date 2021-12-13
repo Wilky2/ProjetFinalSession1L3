@@ -3,7 +3,6 @@ package core.data;
 import java.util.ArrayList;
 import java.util.Date;
 
-import core.model.compte.Compte;
 import core.model.transaction.Transaction;
 import core.model.transaction.Depot;
 import core.model.transaction.Transfert;

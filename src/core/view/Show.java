@@ -12,7 +12,7 @@ public abstract class Show {
     }
 
 
-    public static void defFeature() {
+    public static void operation() {
         display(" 1. Enregistrer");
         display(" 2. Modifier");
         display(" 3. Afficher");
