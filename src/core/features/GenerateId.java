@@ -5,12 +5,13 @@ import java.util.Random;
 public class GenerateId {
 
     int idClient = 1000;
-    int numeroCompte;
+    int numeroCompte = 100_000;
+
     public String valueIdCLient() {
         return  String.valueOf(idClient++);
     }
 
-    public String valueNumeroCompte() {
+    public String valueNumeroCompte(Object value) {
         return  String.valueOf(numeroCompte++);
     }
 }

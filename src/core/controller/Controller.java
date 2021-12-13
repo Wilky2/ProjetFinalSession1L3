@@ -111,7 +111,7 @@ public class Controller {
 
         do {
 
-            Show.operation();
+            Show.gestionCompte();
             try {
                 choix = read.readInt();
                 response = 1;
