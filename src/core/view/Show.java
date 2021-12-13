@@ -2,7 +2,7 @@ package core.view;
 
 public abstract class Show {
     public static void menuShow() {
-        
+
         display(" \n-----------------------------------------------MENU---------------------------------------------\n");
         display(" 1. Gestion de compte");
         display(" 2. Gestion de client");
@@ -11,8 +11,14 @@ public abstract class Show {
 
     }
 
-
     public static void operation() {
+        display(" 1. Enregistrer");
+        display(" 2. Modifier");
+        display(" 3. Afficher");
+        display(" 4. Rechercher");
+    }
+
+    public static void gestionCompte() {
         display(" 1. Enregistrer");
         display(" 2. Modifier");
         display(" 3. Afficher");
@@ -24,13 +30,7 @@ public abstract class Show {
         display(" 2. Modifier");
         display(" 3. Afficher");
         display(" 4. Supprimer");
-    }
-
-    public static void gestionCompte() {
-        display(" 1. Enregistrer");
-        display(" 2. Modifier");
-        display(" 3. Afficher");
-        display(" 4. Rechercher");
+        display(" 5. Rechercher");
     }
 
     public static void display(Object o) {

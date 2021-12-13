@@ -15,7 +15,6 @@ import core.model.compte.Compte;
 import core.model.compte.Devise;
 import core.model.compte.Etat;
 import core.model.compte.TypeCompte;
-import core.model.transaction.TypeTransaction;
 // import core.model.features.Operation;
 import core.view.Read;
 import core.view.Show;
@@ -106,50 +105,6 @@ public class Controller {
     // clientSwitchCase
     // ----------------------------------------------------------------------------------------------------
 
-    public void clientSwitchCase() throws NoExistException {
-        Integer choix;
-        Integer response;
-
-        do {
-
-            Show.gestionClient();
-            try {
-                choix = read.readInt();
-                response = 1;
-
-                switch (choix) {
-                    case 1:
-                        DataClient.dataClient.enregistrer(ClientMain());
-                        break;
-                    case 2:
-                        DataClient.dataClient.modifier(modifierClientMain());
-                        break;
-                    case 3:
-                        Show.display(DataClient.dataClient.lister());
-                        break;
-                    case 4:
-                        Show.display(DataClient.dataClient.rechercher(modifierIdClient()));
-                        break;
-
-                    case 5:
-                        DataClient.dataClient.supprimer(supprimerIdClient());
-                        break;
-
-                    default:
-                        break;
-                }
-
-            } catch (InputMismatchException e) {
-                Show.display("Choix ne correspond pas");
-                sc.nextLine();
-            }
-
-            Show.display("Souhaiter Vous Continuer (Oui 1) (0 Non)");
-            response = read.readInt();
-        } while (response.equals(1));
-
-    }
-
     public void compteSwitchCase() throws NoExistException {
         Integer choix;
         Integer response;
@@ -193,10 +148,50 @@ public class Controller {
 
     }
 
-    public static void name() {
+    public void clientSwitchCase() throws NoExistException {
+        Integer choix;
+        Integer response;
+
+        do {
+
+            Show.gestionClient();
+            try {
+                choix = read.readInt();
+                response = 1;
+
+                switch (choix) {
+                    case 1:
+                        DataClient.dataClient.enregistrer(ClientMain());
+                        break;
+                    case 2:
+                        DataClient.dataClient.modifier(modifierClientMain());
+                        break;
+                    case 3:
+                        Show.display(DataClient.dataClient.lister());
+                        break;
+                    case 4:
+                        DataClient.dataClient.supprimer(supprimerIdClient());
+                        break;
+                    case 5:
+                        Show.display(DataClient.dataClient.rechercher(modifierIdClient()));
+                        break;
+
+                    default:
+                        break;
+                }
+
+            } catch (InputMismatchException e) {
+                Show.display("Choix ne correspond pas");
+                sc.nextLine();
+            }
+
+            Show.display("Souhaiter Vous Continuer (Oui 1) (0 Non)");
+            response = read.readInt();
+        } while (response.equals(1));
 
     }
-    // ----------------------------------------------------------------------------------------------------
+
+  // ----------------------------------------------------------------------------------------------------
     // endSwitchCaseProgram
     // ----------------------------------------------------------------------------------------------------
 
@@ -477,11 +472,9 @@ public class Controller {
     // endClient
     //
 
-    // ****************************************************SUprimer
-    // ***************************************
-    // ****************************************************Modifier
-    // ***************************************
-    // partie client
+    // --------------------------------------------------------------------------------------
+    // Fonction d'aides pour les Classe DATA
+    // --------------------------------------------------------------------------------------
     public String modifierIdClient() {
         Show.display("Rechercher par id client");
         String m_idClient = sc.nextLine();
@@ -494,73 +487,10 @@ public class Controller {
         return s_idCLient;
     }
 
-    // partie Compte
     public int modifierNumberCompte() {
         Show.display("Supprimer un compte par numero");
         int numero = read.readInt();
         return numero;
-    }
-
-    // ****************************************************TRANSACTION
-    // ***************************************
-    // ****************************************************TRANSACTION
-    // ***************************************
-
-    public void transaction() {
-
-    }
-
-    public TypeTransaction TypeTransactionValue() {
-        TypeTransaction tr = null;
-        int choix = 0;
-
-        do {
-
-            Show.display("\nchoisissez le type de Transaction");
-            Show.display(" 1. Transaction Depot");
-            Show.display(" 2. Transaction Transfert");
-            Show.display(" 3. Transaction Retrait");
-            choix = read.readInt();
-
-            if (choix == 1) {
-
-                Show.display("Type de transaction : Type Depot");
-
-                tr = TypeTransaction.depot;
-
-            }
-
-            if (choix == 2) {
-
-                Show.display("Type de transaction : Type Transfert");
-
-                tr = TypeTransaction.transfert;
-
-            }
-
-            if (choix == 3) {
-
-                Show.display("Type de transaction : Type Retrait");
-
-                tr = TypeTransaction.retrait;
-
-            }
-        } while (choix != 1 && choix != 2 && choix != 3);
-
-        return tr;
-    }
-
-    public void transactionSwitchCase() throws NoExistException {
-    }
-
-    // ----------------------------------------------------------------------------------------------------
-    // Partie Transaction
-    // ----------------------------------------------------------------------------------------------------
-
-    public void DepotMain() {
-        // int idTransaction; Date dateTransaction; Compte compte; double montant;
-        // String nomDeposant, prenomDeposant;
-
     }
 
 }
