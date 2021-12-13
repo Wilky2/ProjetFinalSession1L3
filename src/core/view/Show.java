@@ -19,6 +19,20 @@ public abstract class Show {
         display(" 4. Rechercher");
     }
 
+    public static void gestionClient() {
+        display(" 1. Enregistrer");
+        display(" 2. Modifier");
+        display(" 3. Afficher");
+        display(" 4. Supprimer");
+    }
+
+    public static void gestionCompte() {
+        display(" 1. Enregistrer");
+        display(" 2. Modifier");
+        display(" 3. Afficher");
+        display(" 4. Rechercher");
+    }
+
     public static void display(Object o) {
         System.out.println(o);
     }

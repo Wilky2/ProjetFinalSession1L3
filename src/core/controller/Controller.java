@@ -1,11 +1,13 @@
 package core.controller;
 
+import java.sql.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import core.data.DataClient;
 import core.data.DataCompte;
 import core.data.NoExistException;
+import core.features.GenerateId;
 import core.model.client.Client;
 import core.model.client.Sexe;
 import core.model.client.TypeClient;
@@ -19,6 +21,7 @@ import core.view.Read;
 import core.view.Show;
 
 public class Controller {
+    GenerateId gen = new GenerateId();
     Read read;
     TypeCompte type;
     Client client;
@@ -40,7 +43,7 @@ public class Controller {
         // typeClient
     }
 
-    public void running() throws NoExistException{
+    public void running() throws NoExistException {
         switchCaseProgram();
     }
 
@@ -49,7 +52,7 @@ public class Controller {
      * 
      * @throws NoExist
      */
-    public void switchCaseProgram() throws NoExistException{
+    public void switchCaseProgram() throws NoExistException {
 
         int choice;
         Show.menuShow();
@@ -61,12 +64,13 @@ public class Controller {
                 case 1:
                     compteSwitchCase();
                     break;
+
                 case 2:
                     clientSwitchCase();
                     break;
 
                 case 3:
-                    // null
+                    // transactionSwitchCase();
                     break;
                 default:
                     break;
@@ -102,13 +106,13 @@ public class Controller {
     // clientSwitchCase
     // ----------------------------------------------------------------------------------------------------
 
-    public void clientSwitchCase() throws NoExistException{
+    public void clientSwitchCase() throws NoExistException {
         Integer choix;
         Integer response;
 
         do {
 
-            Show.operation();
+            Show.gestionClient();
             try {
                 choix = read.readInt();
                 response = 1;
@@ -118,14 +122,17 @@ public class Controller {
                         DataClient.dataClient.enregistrer(ClientMain());
                         break;
                     case 2:
-                        Show.display(DataClient.dataClient.rechercher(ByidClient()).toString());
+                        DataClient.dataClient.modifier(modifierClientMain());
                         break;
-
                     case 3:
-                        DataClient.dataClient.modifier(ByModifyClient());
+                        Show.display(DataClient.dataClient.lister());
                         break;
                     case 4:
-                        DataClient.dataClient.modifier(ByModifyClient());
+                        Show.display(DataClient.dataClient.rechercher(modifierIdClient()));
+                        break;
+
+                    case 5:
+                        DataClient.dataClient.supprimer(supprimerIdClient());
                         break;
 
                     default:
@@ -143,7 +150,7 @@ public class Controller {
 
     }
 
-    public void compteSwitchCase() throws NoExistException{
+    public void compteSwitchCase() throws NoExistException {
         Integer choix;
         Integer response;
 
@@ -158,15 +165,17 @@ public class Controller {
                     case 1:
                         DataCompte.dataCompte.enregistrer(CompteMain());
                         break;
+
                     case 2:
-                        // Show.display(DataCompte.dataCompte.rechercher(ByidClient()).toString());
+                        DataCompte.dataCompte.modifier(modifierCompteMain());
                         break;
 
                     case 3:
-                        // DataCompte.dataCompte.modifier(ByModifyClient());
+                        Show.display(DataCompte.dataCompte.lister());
                         break;
+
                     case 4:
-                        // DataCompte.dataCompte.modifier(ByModifyClient());
+                        Show.display(DataCompte.dataCompte.rechercher(modifierNumberCompte()));
                         break;
 
                     default:
@@ -211,7 +220,7 @@ public class Controller {
 
     }
 
-    public Compte ByModifyCompte() {
+    public Compte modifierCompteMain() {
 
         int numero;
         double solde;
@@ -346,10 +355,11 @@ public class Controller {
         String nom, prenom, adresse;
         Show.display("--------->Option Client ");
 
-        Show.displayF("Entrer l'idClient du Client : ");
-        idClient = sc.nextLine();
+        idClient = gen.valueIdCLient();
+        Show.displayF("L'idClient du Client : " + idClient);
+        // idClient = sc.nextLine();
 
-        Show.displayF("Entrer le nom du Client : ");
+        Show.displayF("\nEntrer le nom du Client : ");
         nom = sc.nextLine();
 
         Show.displayF("Entrer le prenom du Client : ");
@@ -359,13 +369,13 @@ public class Controller {
         sexe = sexeClientValue();
 
         Show.displayF("Entrer l'adresse du Client : ");
-        adresse = sc.next();
+        adresse = sc.nextLine();
 
         return new Client(idClient, nom, prenom, typeClient, sexe, adresse);
 
     }
 
-    public Client ByModifyClient() {
+    public Client modifierClientMain() {
         String idClient;
         String nom, prenom, adresse;
         Show.display("--------->Option Client ");
@@ -472,42 +482,33 @@ public class Controller {
     // ****************************************************Modifier
     // ***************************************
     // partie client
-    public String ByidClient() {
+    public String modifierIdClient() {
         Show.display("Rechercher par id client");
-        String idClientt = sc.nextLine();
-        return idClientt;
+        String m_idClient = sc.nextLine();
+        return m_idClient;
     }
 
-    public String SupprimerByid() {
+    public String supprimerIdClient() {
         Show.display("Supprimer par id client");
-        String idClientt = sc.nextLine();
-        return idClientt;
+        String s_idCLient = sc.nextLine();
+        return s_idCLient;
     }
 
     // partie Compte
-    public String ByNumeroCompte() {
-        Show.display("Rechercher par id client");
-        String idClientt = sc.nextLine();
-        return idClientt;
-    }
-
-    public String SupprimerByNumero() {
-        Show.display("Supprimer par id client");
-        String idClientt = sc.nextLine();
-        return idClientt;
+    public int modifierNumberCompte() {
+        Show.display("Supprimer un compte par numero");
+        int numero = read.readInt();
+        return numero;
     }
 
     // ****************************************************TRANSACTION
     // ***************************************
     // ****************************************************TRANSACTION
     // ***************************************
-    public void transactionSwitchCase() throws NoExistException{
-    }
 
     public void transaction() {
-        
-    }
 
+    }
 
     public TypeTransaction TypeTransactionValue() {
         TypeTransaction tr = null;
@@ -533,16 +534,13 @@ public class Controller {
 
                 Show.display("Type de transaction : Type Transfert");
 
-
                 tr = TypeTransaction.transfert;
 
             }
 
-
             if (choix == 3) {
 
                 Show.display("Type de transaction : Type Retrait");
-
 
                 tr = TypeTransaction.retrait;
 
@@ -550,6 +548,19 @@ public class Controller {
         } while (choix != 1 && choix != 2 && choix != 3);
 
         return tr;
+    }
+
+    public void transactionSwitchCase() throws NoExistException {
+    }
+
+    // ----------------------------------------------------------------------------------------------------
+    // Partie Transaction
+    // ----------------------------------------------------------------------------------------------------
+
+    public void DepotMain() {
+        // int idTransaction; Date dateTransaction; Compte compte; double montant;
+        // String nomDeposant, prenomDeposant;
+
     }
 
 }
