@@ -85,4 +85,10 @@ public class Depot extends Transaction {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Depot [compte=" + compte + ", montant=" + montant + ", nomDeposant=" + nomDeposant + ", prenomDeposant="
+				+ prenomDeposant + ", toString()=" + super.toString() + "]";
+	}
+	
 }

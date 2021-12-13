@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import core.data.DataClient;
 import core.data.DataCompte;
+import core.data.NoExistException;
 import core.model.client.Client;
 import core.model.client.Sexe;
 import core.model.client.TypeClient;
@@ -12,6 +13,7 @@ import core.model.compte.Compte;
 import core.model.compte.Devise;
 import core.model.compte.Etat;
 import core.model.compte.TypeCompte;
+import core.model.transaction.TypeTransaction;
 // import core.model.features.Operation;
 import core.view.Read;
 import core.view.Show;
@@ -24,10 +26,8 @@ public class Controller {
     Etat etat;
     Sexe sexe;
     Scanner sc = new Scanner(System.in);
-    DataClient dataClient;
     DataCompte dataCompte;
     TypeClient typeClient;
-
 
     public Controller() {
         read = new Read();
@@ -40,14 +40,16 @@ public class Controller {
         // typeClient
     }
 
-    public void running() {
+    public void running() throws NoExistException{
         switchCaseProgram();
     }
 
     /**
      * switchCaseProgram
+     * 
+     * @throws NoExist
      */
-    public void switchCaseProgram() {
+    public void switchCaseProgram() throws NoExistException{
 
         int choice;
         Show.menuShow();
@@ -71,9 +73,9 @@ public class Controller {
             }
 
         }
-        //  catch (NullPointerException e) {
-        //     Show.display("Mauvaise choix");
-        //     sc.nextLine();
+        // catch (NullPointerException e) {
+        // Show.display("Mauvaise choix");
+        // sc.nextLine();
         // }
 
         catch (InputMismatchException e) {
@@ -100,7 +102,7 @@ public class Controller {
     // clientSwitchCase
     // ----------------------------------------------------------------------------------------------------
 
-    public void clientSwitchCase() {
+    public void clientSwitchCase() throws NoExistException{
         Integer choix;
         Integer response;
 
@@ -113,15 +115,17 @@ public class Controller {
 
                 switch (choix) {
                     case 1:
-                        dataClient.enregistrer(ClientMain());
-                        // DataClient.getInstance().
+                        DataClient.dataClient.enregistrer(ClientMain());
+                        break;
+                    case 2:
+                        Show.display(DataClient.dataClient.rechercher(ByidClient()).toString());
                         break;
 
-                    case 2:
-                        // dataClient.enregistrer(ClientMain());
-                        Show.display("Rechercher par id client");
-                        int idclient = read.readInt();
-                        dataClient.rechercher(idclient);
+                    case 3:
+                        DataClient.dataClient.modifier(ByModifyClient());
+                        break;
+                    case 4:
+                        DataClient.dataClient.modifier(ByModifyClient());
                         break;
 
                     default:
@@ -139,7 +143,7 @@ public class Controller {
 
     }
 
-    public void compteSwitchCase() {
+    public void compteSwitchCase() throws NoExistException{
         Integer choix;
         Integer response;
 
@@ -152,11 +156,17 @@ public class Controller {
 
                 switch (choix) {
                     case 1:
-                        dataCompte.enregistrer(CompteMain());
+                        DataCompte.dataCompte.enregistrer(CompteMain());
+                        break;
+                    case 2:
+                        // Show.display(DataCompte.dataCompte.rechercher(ByidClient()).toString());
                         break;
 
-                    case 2:
-
+                    case 3:
+                        // DataCompte.dataCompte.modifier(ByModifyClient());
+                        break;
+                    case 4:
+                        // DataCompte.dataCompte.modifier(ByModifyClient());
                         break;
 
                     default:
@@ -175,7 +185,7 @@ public class Controller {
     }
 
     public static void name() {
-        
+
     }
     // ----------------------------------------------------------------------------------------------------
     // endSwitchCaseProgram
@@ -188,6 +198,26 @@ public class Controller {
         Show.display("--------->Option Gompte ");
 
         Show.displayF("Entrer le numero du compte : ");
+        numero = read.readInt();
+
+        type = typeCompteValue();
+        devise = deviseCompteValue();
+
+        Show.displayF("Entrer le solde du compte : ");
+        solde = read.readInt();
+
+        etat = etatCompteValue();
+        return new Compte(numero, type, devise, solde, etat);
+
+    }
+
+    public Compte ByModifyCompte() {
+
+        int numero;
+        double solde;
+        Show.display("--------->Option Gompte ");
+
+        Show.displayF("Entrer le numero a modifier du compte : ");
         numero = read.readInt();
 
         type = typeCompteValue();
@@ -312,12 +342,12 @@ public class Controller {
 
     public Client ClientMain() {
 
-        int idClient;
+        String idClient;
         String nom, prenom, adresse;
         Show.display("--------->Option Client ");
 
         Show.displayF("Entrer l'idClient du Client : ");
-        idClient = read.readInt();
+        idClient = sc.nextLine();
 
         Show.displayF("Entrer le nom du Client : ");
         nom = sc.nextLine();
@@ -331,8 +361,31 @@ public class Controller {
         Show.displayF("Entrer l'adresse du Client : ");
         adresse = sc.next();
 
-        client = new Client(idClient, nom, prenom, typeClient, sexe, adresse);
-        return client;
+        return new Client(idClient, nom, prenom, typeClient, sexe, adresse);
+
+    }
+
+    public Client ByModifyClient() {
+        String idClient;
+        String nom, prenom, adresse;
+        Show.display("--------->Option Client ");
+
+        Show.displayF("Entrer l'id du Client a modifier : ");
+        idClient = read.readNextLine();
+
+        Show.displayF("Entrer le nom du Client : ");
+        nom = read.readNextLine();
+
+        Show.displayF("Entrer le prenom du Client : ");
+        prenom = read.readNextLine();
+
+        typeClient = typeClientValue();
+        sexe = sexeClientValue();
+
+        Show.displayF("Entrer l'adresse du Client : ");
+        adresse = sc.next();
+
+        return new Client(idClient, nom, prenom, typeClient, sexe, adresse);
 
     }
 
@@ -414,6 +467,89 @@ public class Controller {
     // endClient
     //
 
+    // ****************************************************SUprimer
+    // ***************************************
+    // ****************************************************Modifier
+    // ***************************************
+    // partie client
+    public String ByidClient() {
+        Show.display("Rechercher par id client");
+        String idClientt = sc.nextLine();
+        return idClientt;
+    }
 
+    public String SupprimerByid() {
+        Show.display("Supprimer par id client");
+        String idClientt = sc.nextLine();
+        return idClientt;
+    }
+
+    // partie Compte
+    public String ByNumeroCompte() {
+        Show.display("Rechercher par id client");
+        String idClientt = sc.nextLine();
+        return idClientt;
+    }
+
+    public String SupprimerByNumero() {
+        Show.display("Supprimer par id client");
+        String idClientt = sc.nextLine();
+        return idClientt;
+    }
+
+    // ****************************************************TRANSACTION
+    // ***************************************
+    // ****************************************************TRANSACTION
+    // ***************************************
+    public void transactionSwitchCase() throws NoExistException{
+    }
+
+    public void transaction() {
+        
+    }
+
+
+    public TypeTransaction TypeTransactionValue() {
+        TypeTransaction tr = null;
+        int choix = 0;
+
+        do {
+
+            Show.display("\nchoisissez le type de Transaction");
+            Show.display(" 1. Transaction Depot");
+            Show.display(" 2. Transaction Transfert");
+            Show.display(" 3. Transaction Retrait");
+            choix = read.readInt();
+
+            if (choix == 1) {
+
+                Show.display("Type de transaction : Type Depot");
+
+                tr = TypeTransaction.depot;
+
+            }
+
+            if (choix == 2) {
+
+                Show.display("Type de transaction : Type Transfert");
+
+
+                tr = TypeTransaction.transfert;
+
+            }
+
+
+            if (choix == 3) {
+
+                Show.display("Type de transaction : Type Retrait");
+
+
+                tr = TypeTransaction.retrait;
+
+            }
+        } while (choix != 1 && choix != 2 && choix != 3);
+
+        return tr;
+    }
 
 }

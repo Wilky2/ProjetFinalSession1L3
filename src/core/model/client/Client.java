@@ -1,7 +1,7 @@
 package core.model.client;
 
 public class Client {
-	private int idClient;
+	private String idClient;
 	private String nom;
 	private String prenom;
 	private TypeClient type;
@@ -10,7 +10,7 @@ public class Client {
 	private String nif;
 	private String telephone;
 	
-	public Client(int idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse, String nif,String telephone) {
+	public Client(String idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse, String nif,String telephone) {
 		super();
 		this.idClient = idClient;
 		this.nom = nom;
@@ -22,7 +22,7 @@ public class Client {
 		this.telephone = telephone;
 	}
 
-	public Client(int idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse) {
+	public Client(String idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse) {
 		super();
 		this.idClient = idClient;
 		this.nom = nom;
@@ -34,11 +34,11 @@ public class Client {
 		this.telephone = null;
 	}
 
-	public int getIdClient() {
+	public String getIdClient() {
 		return idClient;
 	}
 
-	public void setIdClient(int idClient) {
+	public void setIdClient(String idClient) {
 		this.idClient = idClient;
 	}
 
@@ -97,6 +97,10 @@ public class Client {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Client [idClient=" + idClient + ", nom=" + nom + ", prenom=" + prenom + ", type=" + type.getType() + ", sexe="
+				+ sexe.getSexe() + ", adresse=" + adresse + ", nif=" + nif + ", telephone=" + telephone + "]";
+	}	
 }

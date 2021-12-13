@@ -3,6 +3,8 @@ package core.data;
 import java.util.ArrayList;
 import java.util.Date;
 
+import core.model.client.Client;
+import core.model.compte.Compte;
 import core.model.transaction.Transaction;
 import core.model.transaction.Depot;
 import core.model.transaction.Transfert;
@@ -27,35 +29,35 @@ public class DataTransaction {
 	public void enregistrer(Transaction transaction) {
 		
 		TypeTransaction typeTransaction = transaction.getType();
-		idTransaction.add(transaction.getIdTransaction());
-		dateTransaction.add(transaction.getDateTransaction());
-		type.add(typeTransaction);
+		this.idTransaction.add(transaction.getIdTransaction());
+		this.dateTransaction.add(transaction.getDateTransaction());
+		this.type.add(typeTransaction);
 		
 		switch(typeTransaction) {
 		
 		case depot :{
 			DataDepot.dataDepot.enregistrer(transaction);
-		}
+		}break;
 		
 		case transfert:{
 			DataTransfert.dataTransfert.enregistrer(transaction);
-		}
+		}break;
 		
 		case retrait:{
 			DataRetrait.dataRetrait.enregistrer(transaction);
-		}
+		}break;
 		
 		}
 	}
 	
 	public Transaction rechercher(int id) {
-		int indexIdTransaction = idTransaction.indexOf(idTransaction);
+		int indexIdTransaction = this.idTransaction.indexOf(id);
 		if(indexIdTransaction < 0 ) {
 			return null;
 		}
 		
 		Transaction transaction = null;
-		TypeTransaction typeTransaction = type.get(indexIdTransaction);
+		TypeTransaction typeTransaction = this.type.get(indexIdTransaction);
 		
 		switch(typeTransaction) {
 		
@@ -78,34 +80,71 @@ public class DataTransaction {
 		}
 	}
 	
-	public void modifier(Transaction transaction) throws NoExist {
-		int indexIdTransaction = idTransaction.indexOf(transaction.getIdTransaction());
+	public void modifier(Transaction transaction) throws NoExistException {
+		int indexIdTransaction = this.idTransaction.indexOf(transaction.getIdTransaction());
 		if(indexIdTransaction < 0) {
-			throw new NoExist();
+			throw new NoExistException();
 		}
 		TypeTransaction typeTransaction = transaction.getType();
-		idTransaction.set(indexIdTransaction, transaction.getIdTransaction());
-		dateTransaction.set(indexIdTransaction, transaction.getDateTransaction());
-		type.set(indexIdTransaction, typeTransaction);
+		this.idTransaction.set(indexIdTransaction, transaction.getIdTransaction());
+		this.dateTransaction.set(indexIdTransaction, transaction.getDateTransaction());
+		this.type.set(indexIdTransaction, typeTransaction);
 		
 		switch(typeTransaction) {
 		
 		case depot :{
 			DataDepot.dataDepot.modifier(indexIdTransaction,transaction);
-		}
+		}break;
 		
 		case transfert:{
 			DataTransfert.dataTransfert.modifier(indexIdTransaction,transaction);
-		}
+		}break;
 		
 		case retrait:{
 			DataRetrait.dataRetrait.modifier(indexIdTransaction,transaction);
-		}
+		}break;
 		
 		}
 		
 	}
+	
+	public void supprimer(int id) throws NoExistException {
+		int indexIdTransaction = this.idTransaction.indexOf(id);
+		if(indexIdTransaction < 0) {
+			throw new NoExistException();
+		}
+		
+		TypeTransaction typeTransaction = this.type.get(indexIdTransaction);
+		this.idTransaction.remove(indexIdTransaction);
+		this.dateTransaction.remove(indexIdTransaction);
+		this.type.remove(indexIdTransaction);
+		
+		switch(typeTransaction) {
+		
+		case depot :{
+			DataDepot.dataDepot.supprimer(indexIdTransaction);
+		}break;
+		
+		case transfert:{
+			DataTransfert.dataTransfert.supprimer(indexIdTransaction);
+		}break;
+		
+		case retrait:{
+			DataRetrait.dataRetrait.supprimer(indexIdTransaction);
+		}break;
+		
+		}
+	}
+	
+	public ArrayList<Transaction> lister(){
+		ArrayList<Transaction> listeTransaction = new ArrayList<Transaction>();
+		for(int i = 0 ; i< this.idTransaction.size();i++) {
+			listeTransaction.add(this.rechercher(this.idTransaction.get(i)));
+		}
+		return listeTransaction;
+	}
 }	
+
 
 class DataDepot{
 
@@ -125,30 +164,35 @@ class DataDepot{
 	}
 
 	public void enregistrer(Transaction transaction) {
-		idCompte.add(((Depot) transaction).getCompte().getNumero());
-		montant.add(((Depot) transaction).getMontant());
-		nomDeposant.add(((Depot) transaction).getNomDeposant());
-		prenomDeposant.add(((Depot) transaction).getPrenomDeposant());
+		this.idCompte.add(((Depot) transaction).getCompte().getNumero());
+		this.montant.add(((Depot) transaction).getMontant());
+		this.nomDeposant.add(((Depot) transaction).getNomDeposant());
+		this.prenomDeposant.add(((Depot) transaction).getPrenomDeposant());
 	}
 	
 	public Depot Depot(int index,int idTransaction,Date dateTransaction) {
 		return new Depot(idTransaction,
 				dateTransaction,
-				DataCompte.dataCompte.rechercher(idCompte.get(index)),
-				montant.get(index),
-				nomDeposant.get(index),
-				prenomDeposant.get(index)
+				DataCompte.dataCompte.rechercher(this.idCompte.get(index)),
+				this.montant.get(index),
+				this.nomDeposant.get(index),
+				this.prenomDeposant.get(index)
 				);
 	}
 	
 	public void modifier(int index, Transaction transaction) {
-		idCompte.set(index,((Depot) transaction).getCompte().getNumero());
-		montant.set(index,((Depot) transaction).getMontant());
-		nomDeposant.set(index,((Depot) transaction).getNomDeposant());
-		prenomDeposant.set(index,((Depot) transaction).getPrenomDeposant());
+		this.idCompte.set(index,((Depot) transaction).getCompte().getNumero());
+		this.montant.set(index,((Depot) transaction).getMontant());
+		this.nomDeposant.set(index,((Depot) transaction).getNomDeposant());
+		this.prenomDeposant.set(index,((Depot) transaction).getPrenomDeposant());
 	}
 	
-	
+	public void supprimer(int index) {
+		this.idCompte.remove(index);
+		this.montant.remove(index);
+		this.nomDeposant.remove(index);
+		this.prenomDeposant.remove(index);
+	}
 }
 
 class DataTransfert{
@@ -170,33 +214,40 @@ class DataTransfert{
 	}
 	
 	public void enregistrer(Transaction transaction) {
-		idCompteDebiteur.add(((Transfert) transaction).getCompteDebiteur().getNumero());
-		montantDebiteur.add(((Transfert) transaction).getMontantDebiteur());
-		idCompteCrediteur.add(((Transfert) transaction).getCompteCrediteur().getNumero());
-		montantCrediteur.add(((Transfert) transaction).getMontantCrediteur());
-		description.add(((Transfert) transaction).getDescription());
+		this.idCompteDebiteur.add(((Transfert) transaction).getCompteDebiteur().getNumero());
+		this.montantDebiteur.add(((Transfert) transaction).getMontantDebiteur());
+		this.idCompteCrediteur.add(((Transfert) transaction).getCompteCrediteur().getNumero());
+		this.montantCrediteur.add(((Transfert) transaction).getMontantCrediteur());
+		this.description.add(((Transfert) transaction).getDescription());
 	}
 	
 	public Transfert transfert(int index,int idTransaction,Date dateTransaction) {
 		return new Transfert(
 				idTransaction,
 				dateTransaction,
-				DataCompte.dataCompte.rechercher(idCompteDebiteur.get(index)),
-				montantDebiteur.get(index),
-				DataCompte.dataCompte.rechercher(idCompteCrediteur.get(index)),
-				montantCrediteur.get(index),
-				description.get(index)
+				DataCompte.dataCompte.rechercher(this.idCompteDebiteur.get(index)),
+				this.montantDebiteur.get(index),
+				DataCompte.dataCompte.rechercher(this.idCompteCrediteur.get(index)),
+				this.montantCrediteur.get(index),
+				this.description.get(index)
 				);
 	}
 	
 	public void modifier(int index,Transaction transaction) {
-		idCompteDebiteur.set(index,((Transfert) transaction).getCompteDebiteur().getNumero());
-		montantDebiteur.set(index,((Transfert) transaction).getMontantDebiteur());
-		idCompteCrediteur.set(index,((Transfert) transaction).getCompteCrediteur().getNumero());
-		montantCrediteur.set(index,((Transfert) transaction).getMontantCrediteur());
-		description.set(index,((Transfert) transaction).getDescription());
+		this.idCompteDebiteur.set(index,((Transfert) transaction).getCompteDebiteur().getNumero());
+		this.montantDebiteur.set(index,((Transfert) transaction).getMontantDebiteur());
+		this.idCompteCrediteur.set(index,((Transfert) transaction).getCompteCrediteur().getNumero());
+		this.montantCrediteur.set(index,((Transfert) transaction).getMontantCrediteur());
+		this.description.set(index,((Transfert) transaction).getDescription());
 	}
 	
+	public void supprimer(int index) {
+		this.idCompteDebiteur.remove(index);
+		this.montantDebiteur.remove(index);
+		this.idCompteCrediteur.remove(index);
+		this.montantCrediteur.remove(index);
+		this.description.remove(index);
+	}
 }
 
 class DataRetrait{
@@ -213,21 +264,25 @@ class DataRetrait{
 	}
 	
 	public void enregistrer(Transaction transaction) {
-		idCompte.add(((Retrait) transaction).getCompte().getNumero());
-		montant.add(((Retrait) transaction).getMontant());
+		this.idCompte.add(((Retrait) transaction).getCompte().getNumero());
+		this.montant.add(((Retrait) transaction).getMontant());
 	}
 	
 	public Retrait retrait(int index,int idTransaction,Date dateTransaction) {
 		return new Retrait(idTransaction,
 				dateTransaction,
-				DataCompte.dataCompte.rechercher(idCompte.get(index)),
-				montant.get(index)
+				DataCompte.dataCompte.rechercher(this.idCompte.get(index)),
+				this.montant.get(index)
 				);
 	}
 	
 	public void modifier(int index,Transaction transaction) {
-		idCompte.set(index,((Retrait) transaction).getCompte().getNumero());
-		montant.set(index,((Retrait) transaction).getMontant());
+		this.idCompte.set(index,((Retrait) transaction).getCompte().getNumero());
+		this.montant.set(index,((Retrait) transaction).getMontant());
 	}
 	
+	public void supprimer(int index) {
+		this.idCompte.remove(index);
+		this.montant.remove(index);
+	}
 }

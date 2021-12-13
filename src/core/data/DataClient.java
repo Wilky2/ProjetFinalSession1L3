@@ -8,7 +8,7 @@ import core.model.client.TypeClient;
 
 public class DataClient {
 	
-	private ArrayList<Integer> idClient;
+	private ArrayList<String> idClient;
 	private ArrayList<String> nom;
 	private ArrayList<String> prenom;
 	private ArrayList<TypeClient> type;
@@ -21,7 +21,7 @@ public class DataClient {
 	
 	private DataClient() {
 		super();
-		this.idClient = new ArrayList<Integer>();
+		this.idClient = new ArrayList<String>();
 		this.nom = new ArrayList<String>();
 		this.prenom = new ArrayList<String>();
 		this.type = new ArrayList<TypeClient>();
@@ -32,45 +32,70 @@ public class DataClient {
 	}
 
 	public void enregistrer(Client client) {
-		idClient.add(client.getIdClient());
-		nom.add(client.getNom());
-		prenom.add(client.getPrenom());
-		type.add(client.getType());
-		sexe.add(client.getSexe());
-		adresse.add(client.getAdresse());
-		nif.add(client.getNif());
-		telephone.add(client.getTelephone());
+		this.idClient.add(client.getIdClient());
+		this.nom.add(client.getNom());
+		this.prenom.add(client.getPrenom());
+		this.type.add(client.getType());
+		this.sexe.add(client.getSexe());
+		this.adresse.add(client.getAdresse());
+		this.nif.add(client.getNif());
+		this.telephone.add(client.getTelephone());
 	}
 	
-	public Client rechercher(int idclient) {
-		int indexIdClient = idClient.indexOf(idClient);
+	public Client rechercher(String id) {
+		int indexIdClient = this.idClient.indexOf(id);
 		if(indexIdClient < 0 ) {
 			return null;
 		}
-		return new Client(idClient.get(indexIdClient),
-				nom.get(indexIdClient),
-				prenom.get(indexIdClient),
-				type.get(indexIdClient),
-				sexe.get(indexIdClient),
-				adresse.get(indexIdClient),
-				nif.get(indexIdClient),
-				telephone.get(indexIdClient)
+		return new Client(this.idClient.get(indexIdClient),
+				this.nom.get(indexIdClient),
+				this.prenom.get(indexIdClient),
+				this.type.get(indexIdClient),
+				this.sexe.get(indexIdClient),
+				this.adresse.get(indexIdClient),
+				this.nif.get(indexIdClient),
+				this.telephone.get(indexIdClient)
 				);
 				
 	}
 	
-	public void modifier(Client client) throws NoExist {
-		int indexIdClient = idClient.indexOf(client.getIdClient());
+	public void modifier(Client client) throws NoExistException {
+		int indexIdClient = this.idClient.indexOf(client.getIdClient());
 		if(indexIdClient < 0 ) {
-			throw new NoExist();
+			throw new NoExistException();
 		}
-		idClient.set(indexIdClient, client.getIdClient());
-		nom.set(indexIdClient,client.getNom());
-		prenom.set(indexIdClient,client.getPrenom());
-		type.set(indexIdClient,client.getType());
-		sexe.set(indexIdClient,client.getSexe());
-		adresse.set(indexIdClient,client.getAdresse());
-		nif.set(indexIdClient,client.getNif());
-		telephone.set(indexIdClient,client.getTelephone());
+		this.idClient.set(indexIdClient, client.getIdClient());
+		this.nom.set(indexIdClient,client.getNom());
+		this.prenom.set(indexIdClient,client.getPrenom());
+		this.type.set(indexIdClient,client.getType());
+		this.sexe.set(indexIdClient,client.getSexe());
+		this.adresse.set(indexIdClient,client.getAdresse());
+		this.nif.set(indexIdClient,client.getNif());
+		this.telephone.set(indexIdClient,client.getTelephone());
+	}
+	
+	public void supprimer(String id) throws NoExistException {
+		int indexIdClient = this.idClient.indexOf(id);
+		if(indexIdClient < 0) {
+			throw new NoExistException();
+		}
+		
+		this.idClient.remove(indexIdClient);
+		this.nom.remove(indexIdClient);
+		this.prenom.remove(indexIdClient);
+		this.type.remove(indexIdClient);
+		this.sexe.remove(indexIdClient);
+		this.adresse.remove(indexIdClient);
+		this.nif.remove(indexIdClient);
+		this.telephone.remove(indexIdClient);
+		
+	}
+	
+	public ArrayList<Client> lister(){
+		ArrayList<Client> listeClient = new ArrayList<Client>();
+		for(int i = 0 ; i< this.idClient.size();i++) {
+			listeClient.add(this.rechercher(this.idClient.get(i)));
+		}
+		return listeClient;
 	}
 }

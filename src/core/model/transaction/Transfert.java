@@ -102,4 +102,13 @@ public class Transfert extends Transaction {
 		this.compteCrediteur.crediter(montantCrediteur);
 	}
 
+	@Override
+	public String toString() {
+		return "Transfert [compteDebiteur=" + compteDebiteur + ", montantDebiteur=" + montantDebiteur
+				+ ", compteCrediteur=" + compteCrediteur + ", montantCrediteur=" + montantCrediteur + ", description="
+				+ description + ", toString()=" + super.toString() + "]";
+	}
+	
+	
+
 }

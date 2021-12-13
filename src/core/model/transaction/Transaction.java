@@ -42,4 +42,12 @@ public abstract class Transaction {
 	}
 
 	abstract public void effectuer() throws MontantNonValideException, CompteNonValideException;
+
+	@Override
+	public String toString() {
+		return "Transaction [idTransaction=" + idTransaction + ", dateTransaction=" + dateTransaction + ", type=" + type.getType()
+				+ "]";
+	}
+	
+	
 }

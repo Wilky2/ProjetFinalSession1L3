@@ -53,7 +53,12 @@ public class Retrait extends Transaction{
 		compte.debiter(montant);
 		
 	}
-	
-	
+
+
+
+	@Override
+	public String toString() {
+		return "Retrait [compte=" + compte + ", montant=" + montant + ", toString()=" + super.toString() + "]";
+	}
 	
 }
