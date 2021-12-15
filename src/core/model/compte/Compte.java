@@ -94,5 +94,12 @@ public class Compte {
 		}
 		this.setSolde(this.getSolde() + montant);
 	}
+
+	@Override
+	public String toString() {
+		return "Compte [numero=" + numero + ", type=" + type.getType() + ", devise=" + devise.getDevise() + ", solde=" + solde + ", etat="
+				+ etat.getEtat() + ", proprietaire=" + proprietaire + "]";
+	}
+	
 	
 }

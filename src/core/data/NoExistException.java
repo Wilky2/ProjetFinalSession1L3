@@ -1,9 +1,9 @@
 package core.data;
 
-public class NoExist extends Exception {
+public class NoExistException extends Exception {
 	private String message;
 	
-	public NoExist() {
+	public NoExistException() {
 		this.message = "Donne inexistant";
 	}
 }

@@ -1,5 +1,6 @@
 package core.model.transaction;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import core.model.compte.Compte;
@@ -17,7 +18,7 @@ public class Transfert extends Transaction {
 	
 	
 
-	public Transfert(int idTransaction, Date dateTransaction,Compte compteDebiteur,double montantDebiteur,Compte compteCrediteur,double montantCrediteur,String description) {
+	public Transfert(int idTransaction, LocalDateTime dateTransaction,Compte compteDebiteur,double montantDebiteur,Compte compteCrediteur,double montantCrediteur,String description) {
 		super(idTransaction, dateTransaction,TypeTransaction.retrait);
 		this.compteDebiteur = compteDebiteur;
 		this.montantDebiteur = montantDebiteur;
@@ -101,5 +102,14 @@ public class Transfert extends Transaction {
 		this.compteDebiteur.debiter(this.montantDebiteur);
 		this.compteCrediteur.crediter(montantCrediteur);
 	}
+
+	@Override
+	public String toString() {
+		return "Transfert [compteDebiteur=" + compteDebiteur + ", montantDebiteur=" + montantDebiteur
+				+ ", compteCrediteur=" + compteCrediteur + ", montantCrediteur=" + montantCrediteur + ", description="
+				+ description + ", toString()=" + super.toString() + "]";
+	}
+	
+	
 
 }

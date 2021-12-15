@@ -1,5 +1,6 @@
 package core.model.transaction;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import core.model.exception.CompteNonValideException;
@@ -7,10 +8,10 @@ import core.model.exception.MontantNonValideException;
 
 public abstract class Transaction {
 	private int idTransaction;
-	private Date dateTransaction;
+	private LocalDateTime dateTransaction;
 	private TypeTransaction type;
 
-	protected Transaction(int idTransaction, Date dateTransaction, TypeTransaction type) {
+	protected Transaction(int idTransaction, LocalDateTime dateTransaction, TypeTransaction type) {
 		super();
 		this.idTransaction = idTransaction;
 		this.dateTransaction = dateTransaction;
@@ -25,11 +26,11 @@ public abstract class Transaction {
 		this.idTransaction = idTransaction;
 	}
 
-	public Date getDateTransaction() {
+	public LocalDateTime getDateTransaction() {
 		return dateTransaction;
 	}
 
-	public void setDateTransaction(Date dateTransaction) {
+	public void setDateTransaction(LocalDateTime dateTransaction) {
 		this.dateTransaction = dateTransaction;
 	}
 
@@ -42,4 +43,12 @@ public abstract class Transaction {
 	}
 
 	abstract public void effectuer() throws MontantNonValideException, CompteNonValideException;
+
+	@Override
+	public String toString() {
+		return "Transaction [idTransaction=" + idTransaction + ", dateTransaction=" + dateTransaction + ", type=" + type.getType()
+				+ "]";
+	}
+	
+	
 }
