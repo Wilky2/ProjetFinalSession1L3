@@ -1,5 +1,6 @@
 package core.model.transaction;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import core.model.compte.Compte;
@@ -16,15 +17,13 @@ public class Depot extends Transaction {
 	
 	
 
-	public Depot(int idTransaction, Date dateTransaction,Compte compte,double montant,String nomDeposant,String prenomDeposant) {
+	public Depot(int idTransaction, LocalDateTime dateTransaction,Compte compte,double montant,String nomDeposant,String prenomDeposant) {
 		super(idTransaction, dateTransaction,TypeTransaction.depot);
 		this.compte = compte;
 		this.montant = montant;
 		this.nomDeposant = nomDeposant;
 		this.prenomDeposant = prenomDeposant;
 	}
-
-	
 
 	public Compte getCompte() {
 		return compte;

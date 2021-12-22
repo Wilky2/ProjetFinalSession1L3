@@ -1,8 +1,10 @@
 package core.model.transaction;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import core.model.compte.Compte;
+import core.model.compte.Devise;
 import core.model.compte.Etat;
 import core.model.exception.CompteNonValideException;
 import core.model.exception.MontantNonValideException;
@@ -17,7 +19,7 @@ public class Transfert extends Transaction {
 	
 	
 
-	public Transfert(int idTransaction, Date dateTransaction,Compte compteDebiteur,double montantDebiteur,Compte compteCrediteur,double montantCrediteur,String description) {
+	public Transfert(int idTransaction, LocalDateTime dateTransaction,Compte compteDebiteur,double montantDebiteur,Compte compteCrediteur,double montantCrediteur,String description) {
 		super(idTransaction, dateTransaction,TypeTransaction.retrait);
 		this.compteDebiteur = compteDebiteur;
 		this.montantDebiteur = montantDebiteur;
@@ -93,8 +95,16 @@ public class Transfert extends Transaction {
 		if(this.compteDebiteur.getEtat() != Etat.A || this.compteCrediteur.getEtat() != Etat.A) {
 			throw new CompteNonValideException();
 		}
-		
-		if(this.montantDebiteur < this.montantCrediteur) {
+		double montantConvertit = this.montantDebiteur;
+		if(compteDebiteur.getDevise()!=compteCrediteur.getDevise()) {
+			if(compteCrediteur.getDevise()==Devise.dollar) {
+				montantConvertit /=105;
+			}
+			else {
+				montantConvertit*=105;
+			}
+		}
+		if(montantConvertit < this.montantCrediteur) {
 			throw new MontantNonValideException();
 		}
 		

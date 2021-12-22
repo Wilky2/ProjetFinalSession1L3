@@ -1,5 +1,6 @@
 package core.model.transaction;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import core.model.compte.Compte;
@@ -11,7 +12,7 @@ public class Retrait extends Transaction{
 	private Compte compte;
 	private double montant;
 	
-	public Retrait(int idTransaction, Date dateTransaction,Compte compte,double montant) {
+	public Retrait(int idTransaction, LocalDateTime dateTransaction,Compte compte,double montant) {
 		super(idTransaction, dateTransaction,TypeTransaction.retrait);
 		this.compte = compte;
 		this.montant = montant;

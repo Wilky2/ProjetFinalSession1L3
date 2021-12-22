@@ -100,7 +100,8 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "Client [idClient=" + idClient + ", nom=" + nom + ", prenom=" + prenom + ", type=" + type.getType() + ", sexe="
-				+ sexe.getSexe() + ", adresse=" + adresse + ", nif=" + nif + ", telephone=" + telephone + "]";
+		
+		return "idClient=" + idClient + ", nom=" + nom + ", prenom=" + prenom + ", type=" + type.getType() + ", sexe="
+				+ sexe.getSexe() + ", adresse=" + adresse + ", nif=" + nif + ", telephone=" + telephone;
 	}	
 }

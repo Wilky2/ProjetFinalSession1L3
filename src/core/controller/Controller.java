@@ -1,13 +1,15 @@
 package core.controller;
 
-import java.sql.Date;
+import java.io.Console;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import core.data.DataClient;
 import core.data.DataCompte;
+import core.data.DataTransaction;
 import core.data.NoExistException;
-import core.features.GenerateId;
+import core.features.Generate;
 import core.model.client.Client;
 import core.model.client.Sexe;
 import core.model.client.TypeClient;
@@ -15,122 +17,240 @@ import core.model.compte.Compte;
 import core.model.compte.Devise;
 import core.model.compte.Etat;
 import core.model.compte.TypeCompte;
-// import core.model.features.Operation;
+import core.model.exception.CompteNonValideException;
+import core.model.exception.MontantNonValideException;
+import core.model.transaction.Depot;
+import core.model.transaction.Retrait;
+import core.model.transaction.Transaction;
+import core.model.transaction.Transfert;
 import core.view.Read;
 import core.view.Show;
 
 public class Controller {
-    GenerateId gen = new GenerateId();
     Read read;
-    TypeCompte type;
-    Client client;
-    Devise devise;
-    Etat etat;
-    Sexe sexe;
-    Scanner sc = new Scanner(System.in);
-    DataCompte dataCompte;
-    TypeClient typeClient;
-
+    
     public Controller() {
         read = new Read();
-        Scanner sc = new Scanner(System.in);
-        TypeCompte type;
-        Devise devise;
-        Etat etat;
-        Sexe sexe;
-        DataClient dataClient;
-        // typeClient
     }
 
-    public void running() throws NoExistException {
+    public void running() {
         switchCaseProgram();
     }
 
-    /**
-     * switchCaseProgram
-     * 
-     * @throws NoExist
-     */
-    public void switchCaseProgram() throws NoExistException {
+    public void switchCaseProgram() {
 
-        int choice;
-        Show.menuShow();
+        int choice = 1;
+      
+        while(choice!=0){
 
-        try {
-            choice = read.readInt();
-
-            switch (choice) {
-                case 1:
-                    compteSwitchCase();
-                    break;
-
-                case 2:
-                    clientSwitchCase();
-                    break;
-
-                case 3:
-                    // transactionSwitchCase();
-                    break;
-                default:
-                    break;
+	        try {
+	            Show.menuShow();
+	            choice = read.readInt();
+	            
+	            switch (choice) {
+	            	case 0:{
+	            		Show.display("Fin du programme");
+	            	}break;
+	            	
+	                case 1:{
+	                    compteSwitchCase();
+	                }break;
+	
+	                case 2:{
+	                    clientSwitchCase();
+	                }break;
+	
+	                case 3:{
+	                    transactionSwitchCase();
+	                }break;
+	                
+	                default:{
+	                	Show.display("Mauvais choix");
+	                }break;
+	            }
+	
+	        }
+	        catch (InputMismatchException e) {
+	            Show.display("Mauvais choix");
+	            read.readNextLine();
+	        }
+	        
+	        if(choice!=0) {
+	            Show.display("Presser enter pour continuer");
+		        try {
+					System.in.read();
+				} catch (IOException e) {
+				}
             }
-
         }
-        // catch (NullPointerException e) {
-        // Show.display("Mauvaise choix");
-        // sc.nextLine();
-        // }
-
-        catch (InputMismatchException e) {
-            Show.display("Choix ne correspond pas");
-            sc.nextLine();
-
-        }
-
-        catch (IndexOutOfBoundsException e) {
-            Show.display("Vous avez depasser la taille prevue");
-            sc.nextLine();
-
-        }
-
-        Show.display("Presser 1 pour continuer");
-        String press = sc.next();
-        if (press.equals("1")) {
-            switchCaseProgram();
-        }
-
     }
 
-    // ----------------------------------------------------------------------------------------------------
-    // clientSwitchCase
-    // ----------------------------------------------------------------------------------------------------
+    private void transactionSwitchCase() {
+    	int choice = 1;
+        
+        while(choice!=0){
 
-    public void compteSwitchCase() throws NoExistException {
-        Integer choix;
-        Integer response;
+	        try {
+	            Show.gestionTransaction();
+	            choice = read.readInt();  
+	            switch (choice) {
+	            	case 0:{
+	            		
+	            	}break;
+	            	
+	                case 1:{
+	                    Show.display("Entrer l'id du compte sur lequel vous voulez deposer le montant");
+	                    Compte compte = DataCompte.dataCompte.rechercher(read.readInt());
+	                    if(compte!=null){
+	                    	Show.display("Entrer le montant du depot");
+	                    	double montant = read.readDouble();
+	                    	Show.display("Entrer le nom du deposant");
+	                    	String nom = read.readString();
+	                    	Show.display("Entrer le prenom du deposant");
+	                    	String prenom = read.readString();
+	                    	Transaction transaction = new Depot(Generate.generate.generatIdTransaction(),
+	                    			LocalDateTime.now(),
+	                    			compte,
+	                    			montant,
+	                    			nom,
+	                    			prenom
+	                    			);
+	                    	transaction.effectuer();
+	                    	DataCompte.dataCompte.modifier(compte);
+	                    	DataTransaction.dataTransaction.enregistrer(transaction);
+	                    }
+	                    else {
+	                    	Show.display("Le compte sur lequel vous voulez effectuer le depot n'existe pas");
+	                    }
+	                }break;
+	
+	                case 2:{
+	                	Show.display("Entrer l'id du compte sur lequel vous voulez effectuer le retrait");
+	                    Compte compte = DataCompte.dataCompte.rechercher(read.readInt());
+	                    if(compte!=null) {
+	                    	Show.display("Ëntrer le montant du retrait");
+	                    	double montant = read.readDouble();
+	                    	Transaction transaction = new Retrait(Generate.generate.generatIdTransaction(),
+	                    			LocalDateTime.now(),
+	                    			compte,
+	                    			montant
+	                    			);
+	                    	transaction.effectuer();
+	                    	DataCompte.dataCompte.modifier(compte);
+	                    	DataTransaction.dataTransaction.enregistrer(transaction);
+	                    }
+	                    else {
+	                    	Show.display("Le compte sur lequel vous voulez effectuer le retrait n'existe pas");
+	                    }
+	                    
+	                }break;
+	
+	                case 3:{
+	                	Show.display("Entrer l'id du compte debiteur");
+	                    Compte compteDebiteur = DataCompte.dataCompte.rechercher(read.readInt());
+	                    if(compteDebiteur!=null) {
+	                    	Show.display("Entrer le montant a debiter");
+	                    	double montantDebiteur = read.readDouble();
+	                    	Show.display("Entrer l'id du compte crediteur");
+	                    	Compte compteCrediteur = DataCompte.dataCompte.rechercher(read.readInt());
+	                    	if(compteCrediteur!=null) {
+	                    		Show.display("Entre le montant a crediter");
+	                    		double montantCrediteur = read.readDouble();
+	                    		Show.display("Description du transfert");
+	                    		String description = read.readString();
+	                    		Transaction transaction = new Transfert(Generate.generate.generatIdTransaction(),
+		                    			LocalDateTime.now(),
+		                    			compteDebiteur,
+		                    			montantDebiteur,
+		                    			compteCrediteur,
+		                    			montantCrediteur,
+		                    			description
+	                    				);
+	                    		transaction.effectuer();
+	                    		DataCompte.dataCompte.modifier(compteDebiteur);
+	                    		DataCompte.dataCompte.modifier(compteCrediteur);
+		                    	DataTransaction.dataTransaction.enregistrer(transaction);
+	                    	}
+	                    	else {
+	                    		Show.display("Le compte crediteur n'existe pas");
+	                    	}
+	                    }
+	                    else {
+	                    	Show.display("Le compte debiteur n'existe pas");
+	                    }
+	                }break;
+	                
+	                case 4:{
+	                	Show.displayTransaction(DataTransaction.dataTransaction.lister());
+	                }break;
+	                
+	                default:{
+	                	Show.display("Mauvais choix");
+	                }break;
+	            }
+	
+	        }
+	        catch (InputMismatchException e) {
+	            Show.display("Mauvais choix");
+	            read.readNextLine();
+	        }
+	        catch (CompteNonValideException e) {
+	        	Show.display("Vous ne pouvez pas effectuer de transaction sur ce compte");
+	        }
+	        catch(MontantNonValideException e) {
+	        	Show.display("Le montant que vous avez entrer n'est pas valide");
+	        }
+	        catch(NoExistException e){
+	        	Show.display("Le compte ne se trouve pas dans notre base de donnée");
+	        }
+	        
+	        if(choice!=0) {
+	            Show.display("Presser enter pour continuer");
+		        try {
+					System.in.read();
+				} catch (IOException e) {
+				}
+            }
+	        
+        }		
+	}
 
-        do {
+    private void compteSwitchCase(){
+        int choix=1;
+        
+        while(choix!=0){
 
             Show.gestionCompte();
             try {
                 choix = read.readInt();
-                response = 1;
 
                 switch (choix) {
-                    case 1:
-                        DataCompte.dataCompte.enregistrer(CompteMain());
+                	
+                	case 0:
+                		break;
+                
+                	case 1:
+                        CompteMain();
                         break;
 
                     case 2:
-                        DataCompte.dataCompte.modifier(modifierCompteMain());
+                        modifierCompteMain();
                         break;
 
                     case 3:
-                        Show.display(DataCompte.dataCompte.lister());
+                        Show.displayCompte(DataCompte.dataCompte.lister());
                         break;
 
                     case 4:
-                        Show.display(DataCompte.dataCompte.rechercher(modifierNumberCompte()));
+                    	Show.display("Entrer le numero du compte a rechercher");
+                        int numero = read.readInt();
+                        Compte compte = DataCompte.dataCompte.rechercher(numero); 
+                        if(compte == null) {
+                        	Show.display("Le compte n'existe pas");
+                        }
+                        else {
+                        	Show.display(compte);
+                        }
                         break;
 
                     default:
@@ -139,99 +259,160 @@ public class Controller {
 
             } catch (InputMismatchException e) {
                 Show.display("Choix ne correspond pas");
-                sc.nextLine();
+                read.readNextLine();
             }
-
-            Show.display("Souhaiter Vous Continuer (Oui 1) (0 Non)");
-            response = read.readInt();
-        } while (response.equals(1));
+            catch(NoExistException e) {
+            	Show.display("Le compte que vous voulez modifier n'existe pas");
+            }
+            
+            if(choix!=0) {
+	            Show.display("Presser enter pour continuer");
+		        try {
+					System.in.read();
+				} catch (IOException e) {
+				}
+            }
+        } 
 
     }
 
-    public void clientSwitchCase() throws NoExistException {
-        Integer choix;
-        Integer response;
+    private void clientSwitchCase(){
+        int choix=1;
+        int response;
 
-        do {
+        while(choix!=0){
 
             Show.gestionClient();
             try {
                 choix = read.readInt();
-                response = 1;
 
                 switch (choix) {
+                
+                	case 0:
+                		break;
                     case 1:
-                        DataClient.dataClient.enregistrer(ClientMain());
+                        ClientMain();
                         break;
                     case 2:
-                        DataClient.dataClient.modifier(modifierClientMain());
+                        modifierClientMain();
                         break;
                     case 3:
-                        Show.display(DataClient.dataClient.lister());
+                        Show.displayClient(DataClient.dataClient.lister());
                         break;
                     case 4:
-                        DataClient.dataClient.supprimer(supprimerIdClient());
+                        supprimerIdClient();
                         break;
                     case 5:
-                        Show.display(DataClient.dataClient.rechercher(modifierIdClient()));
+                    	Show.display("Entrer l'id du client");
+                        String idClient = read.readString();
+                        Client client = DataClient.dataClient.rechercher(idClient);
+                        if(client == null) {
+                        	Show.display("Le client ne se trouve pas dans la base de donnée");
+                        }
+                        else {
+                        	//Show.display(client);
+                        }	
                         break;
-
+                        
+                    case 6:{
+                    	ajouterCompte();
+                    }break;
+                    
+                    case 7:{
+                    	Show.display("Entrer l'id du client");
+                    	Show.displayCompte(DataCompte.dataCompte.rechercherParClient(read.readString()));
+                    }break;
                     default:
                         break;
                 }
 
             } catch (InputMismatchException e) {
                 Show.display("Choix ne correspond pas");
-                sc.nextLine();
+                read.readNextLine();
             }
-
-            Show.display("Souhaiter Vous Continuer (Oui 1) (0 Non)");
-            response = read.readInt();
-        } while (response.equals(1));
+            catch(NoExistException e) {
+            	Show.display("Le client n'existe pas");
+            }
+            if(choix!=0) {
+	            Show.display("Presser enter pour continuer");
+		        try {
+					System.in.read();
+				} catch (IOException e) {
+				}
+            }
+        } 
 
     }
 
-  // ----------------------------------------------------------------------------------------------------
+  private void ajouterCompte() throws NoExistException {
+		Show.display("Entrer l'id du client");
+		Client client = DataClient.dataClient.rechercher(read.readString());
+		if(client == null) {
+			Show.display("Le client n'existe pas dans la base de donnée");
+			return;
+		}
+		TypeCompte type = typeCompteValue();
+		Devise devise = deviseCompteValue();
+		
+		ArrayList<Compte> listeCompteClient = DataCompte.dataCompte.rechercherParClient(client.getIdClient());
+		for(Compte c : listeCompteClient){
+			if(c.getType() == type && c.getDevise() == devise) {
+				Show.display("Vous avez deja un compte du meme type");
+				return;
+			}
+		}
+		
+		Compte compte = DataCompte.dataCompte.rechercher(type, devise, Etat.N);
+	       
+	    if(compte == null) {
+	    	Show.display("Il n y'a pas de compte disponible, veuillez en creer");
+	    	return;
+	   }
+	    
+	   compte.setProprietaire(client);
+	   compte.setEtat(Etat.A);
+	   
+	   DataCompte.dataCompte.modifier(compte);
+	}
+
+// ----------------------------------------------------------------------------------------------------
     // endSwitchCaseProgram
     // ----------------------------------------------------------------------------------------------------
 
-    public Compte CompteMain() {
+    private void CompteMain() {
 
-        int numero;
-        double solde;
-        Show.display("--------->Option Gompte ");
+        int quantite;
 
-        Show.displayF("Entrer le numero du compte : ");
-        numero = read.readInt();
+        Show.display("Entrer la quantite de compte a generer");
+        quantite = read.readInt();
 
-        type = typeCompteValue();
-        devise = deviseCompteValue();
-
-        Show.displayF("Entrer le solde du compte : ");
-        solde = read.readInt();
-
-        etat = etatCompteValue();
-        return new Compte(numero, type, devise, solde, etat);
-
+        TypeCompte type = typeCompteValue();
+        Devise devise = deviseCompteValue();
+        
+        Generate.generate.generateCompte(quantite, type, devise);
     }
 
-    public Compte modifierCompteMain() {
+    private void modifierCompteMain() throws NoExistException {
 
         int numero;
-        double solde;
-        Show.display("--------->Option Gompte ");
 
-        Show.displayF("Entrer le numero a modifier du compte : ");
+        Show.display("Entrer le numero du compte a fermer : ");
         numero = read.readInt();
-
-        type = typeCompteValue();
-        devise = deviseCompteValue();
-
-        Show.displayF("Entrer le solde du compte : ");
-        solde = read.readInt();
-
-        etat = etatCompteValue();
-        return new Compte(numero, type, devise, solde, etat);
+        
+        Compte compte = DataCompte.dataCompte.rechercher(numero);
+        if(compte == null) {
+        	Show.display("Le compte n'existe pas");
+        	return;
+        }
+        
+        if(compte.getEtat() == Etat.N) {
+        	Show.display("Le compte n'est pas encore attribué");
+        	return;
+        }
+        
+        compte.setEtat(Etat.F);
+        
+        DataCompte.dataCompte.modifier(compte);
 
     }
 
@@ -280,17 +461,17 @@ public class Controller {
 
             if (choix == 1) {
 
-                Show.display("Devise du comptes est : Dollar\n");
+                Show.display("Devise du comptes est : Gourde\n");
 
-                dv = Devise.dollar;
+                dv = Devise.gourde;
 
             }
 
             if (choix == 2) {
 
-                Show.display("Devise du comptes est : Gourde\n");
+                Show.display("Devise du comptes est : Dollar\n");
 
-                dv = Devise.gourde;
+                dv = Devise.dollar;
 
             }
 
@@ -344,53 +525,148 @@ public class Controller {
     // endCompte
     // ----------------------------------------------------------------------------------------------------
 
-    public Client ClientMain() {
+    public void ClientMain() throws NoExistException {
 
+    	int choix;
         String idClient;
-        String nom, prenom, adresse;
-        Show.display("--------->Option Client ");
+        String nom, prenom, adresse,telephone = null ,nif = null;
 
-        idClient = gen.valueIdCLient();
-        Show.displayF("L'idClient du Client : " + idClient);
-        // idClient = sc.nextLine();
+        Show.display("\nEntrer le nom du Client : ");
+        nom = read.readString();
 
-        Show.displayF("\nEntrer le nom du Client : ");
-        nom = sc.nextLine();
-
-        Show.displayF("Entrer le prenom du Client : ");
-        prenom = sc.nextLine();
-
-        typeClient = typeClientValue();
-        sexe = sexeClientValue();
-
-        Show.displayF("Entrer l'adresse du Client : ");
-        adresse = sc.nextLine();
-
-        return new Client(idClient, nom, prenom, typeClient, sexe, adresse);
-
+        Show.display("Entrer le prenom du Client : ");
+        prenom = read.readString();
+        
+        Sexe sexe;
+        
+        TypeClient typeClient = typeClientValue();
+        
+        if(typeClient == TypeClient.Moral) {
+        	sexe = Sexe.aucun;
+        }
+        else
+        {
+        	sexe = sexeClientValue();
+        }
+        
+        Show.display("Entrer l'adresse du Client : ");
+        adresse = read.readString();
+        
+       do {
+    	   Show.display("Avez vous un numero telephone\n1. oui\n2. non");
+    	   choix = read.readInt();
+       }while(choix!=1 && choix!=2); 
+       
+       if(choix == 1) {
+    	   Show.display("Entrer votre numero telephone");
+    	   telephone = read.readString();
+       }
+       
+       do {
+    	   Show.display("Avez vous un numero nif\n1. oui\n2. non");
+    	   choix = read.readInt();
+       }while(choix!=1 && choix!=2);
+       
+       if(choix == 1) {
+    	   Show.display("Entrer votre numero nif");
+    	   nif = read.readString();
+       }
+       
+       TypeCompte typeCompte = typeCompteValue();
+       Devise devise = deviseCompteValue();
+       Compte compte = DataCompte.dataCompte.rechercher(typeCompte, devise, Etat.N);
+       
+       if(compte == null) {
+    	   Show.display("Il n y'a pas de compte disponible, veuillez en creer");
+    	   return;
+        }
+       double montantBase = 0;
+       if(compte.getDevise() == Devise.gourde) {
+    	   montantBase = 500;
+       }
+       else {
+    	   montantBase = 10;
+       }
+       
+       double montant;
+       
+       do {
+    	   Show.display("Entrer le montant superieur a :" + montantBase);
+    	   montant = read.readDouble();
+       }while(montant < montantBase);
+       
+       idClient = 	Generate.generate.generateIdClient(nom,prenom);
+       
+       Client client = new Client(idClient, nom, prenom, typeClient, sexe, adresse,nif,telephone);
+       
+       compte.setProprietaire(client);
+       compte.setEtat(Etat.A);
+       compte.setSolde(montant);
+       
+       Show.display("L'id du client :" + client.getIdClient());
+       Show.display("Le numero compte du client :" + compte.getNumero());
+       
+       DataCompte.dataCompte.modifier(compte);
+       DataClient.dataClient.enregistrer(client);
     }
 
-    public Client modifierClientMain() {
-        String idClient;
-        String nom, prenom, adresse;
-        Show.display("--------->Option Client ");
+    private void modifierClientMain() throws NoExistException {
 
-        Show.displayF("Entrer l'id du Client a modifier : ");
-        idClient = read.readNextLine();
-
-        Show.displayF("Entrer le nom du Client : ");
-        nom = read.readNextLine();
-
-        Show.displayF("Entrer le prenom du Client : ");
-        prenom = read.readNextLine();
-
-        typeClient = typeClientValue();
-        sexe = sexeClientValue();
-
-        Show.displayF("Entrer l'adresse du Client : ");
-        adresse = sc.next();
-
-        return new Client(idClient, nom, prenom, typeClient, sexe, adresse);
+    	Show.display("Entrer l'id du client a modifier");
+        Client client  = DataClient.dataClient.rechercher(read.readString());
+        
+        if(client!=null) {
+        	int choix=1;
+     
+	        while(choix!=0){
+	        Show.menuModifierClient();
+	        choix = read.readInt();
+	        
+	        switch(choix) {
+	        	
+	        case 0:{
+	        	DataClient.dataClient.modifier(client);
+	        }break;
+	        
+	        case 1 : {
+	        	Show.display("Entrer le nouveau nom du Client");
+		        client.setNom(read.readString());
+	        }
+	        
+	        case 2 :{
+	        	Show.display("Entrer le nouveau prenom du Client");
+			    client.setPrenom(read.readString());
+	        }
+	        
+	        case 3:{
+	        	client.setType(typeClientValue());
+	        }
+	        
+	        case 4:{
+	        	client.setSexe(sexeClientValue());
+	        }
+	        
+	        case 5:{
+	        	Show.display("Entrer la nouvelle adresse du Client");
+		        client.setAdresse(read.readString());
+	        }
+	        
+	        case 6:{
+	        	Show.display("Entrer le nouveau nif du Client");
+		        client.setNif(read.readString());
+	        }
+	        
+	        case 7:{
+	        	Show.display("Entrer le nouveau numero telphone du Client");
+		        client.setTelephone(read.readString());
+	        }
+	        }
+	        
+	        }
+        }
+        else {
+        	Show.display("Le client que voulez modifier n'existe pas");
+        }
 
     }
 
@@ -477,20 +753,18 @@ public class Controller {
     // --------------------------------------------------------------------------------------
     public String modifierIdClient() {
         Show.display("Rechercher par id client");
-        String m_idClient = sc.nextLine();
+        String m_idClient = read.readString();
         return m_idClient;
     }
 
-    public String supprimerIdClient() {
+    public void supprimerIdClient() throws NoExistException {
         Show.display("Supprimer par id client");
-        String s_idCLient = sc.nextLine();
-        return s_idCLient;
-    }
-
-    public int modifierNumberCompte() {
-        Show.display("Supprimer un compte par numero");
-        int numero = read.readInt();
-        return numero;
+        String s_idCLient = read.readString();
+        DataClient.dataClient.supprimer(s_idCLient);
+        ArrayList<Compte> compte = DataCompte.dataCompte.rechercherParClient(s_idCLient);
+        for(Compte c:compte) {
+        	DataCompte.dataCompte.supprimer(c.getNumero());
+        }
     }
 
 }

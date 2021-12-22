@@ -1,6 +1,8 @@
 package core.data;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import core.model.client.Client;
 import core.model.compte.Compte;
@@ -59,6 +61,16 @@ public class DataCompte {
 				);
 	}
 	
+	public ArrayList<Compte> rechercherParClient(String idClient) {
+		ArrayList<Compte> listeCompte = new ArrayList<Compte>();
+		for(int i = 0 ; i< this.numeroCompte.size();i++) {
+			if(this.idProprietaire.get(i) !=null && this.idProprietaire.get(i).equals(idClient)) {
+				listeCompte.add(this.rechercher(this.numeroCompte.get(i)));
+			}		
+		}
+		return listeCompte;
+	}
+	
 	public void modifier(Compte compte) throws NoExistException {
 		int indexNumeroCompte = this.numeroCompte.indexOf(compte.getNumero());
 		if(indexNumeroCompte < 0) {
@@ -96,5 +108,15 @@ public class DataCompte {
 			listeCompte.add(this.rechercher(this.numeroCompte.get(i)));
 		}
 		return listeCompte;
+	}
+	
+	public Compte rechercher(TypeCompte type,Devise devise,Etat etat) {
+		for(int index = 0;index<this.type.size();index++) {
+			if(this.type.get(index) == type && this.devise.get(index) == devise && this.etat.get(index) ==etat) {
+				return this.rechercher(this.numeroCompte.get(index));
+			} 
+		}
+		return null;
+		
 	}
 }

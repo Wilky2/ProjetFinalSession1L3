@@ -1,5 +1,6 @@
 package core.data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import core.model.transaction.TypeTransaction;
 public class DataTransaction {
 	
 	private ArrayList<Integer> idTransaction;
-	private ArrayList<Date> dateTransaction;
+	private ArrayList<LocalDateTime> dateTransaction;
 	private ArrayList<TypeTransaction> type;
 	
 	public static DataTransaction dataTransaction = new DataTransaction();
@@ -22,7 +23,7 @@ public class DataTransaction {
 	private DataTransaction() {
 		super();
 		this.idTransaction = new ArrayList<Integer>();
-		this.dateTransaction = new ArrayList<Date>();
+		this.dateTransaction = new ArrayList<LocalDateTime>();
 		this.type = new ArrayList<TypeTransaction>();
 	}
 
@@ -170,9 +171,9 @@ class DataDepot{
 		this.prenomDeposant.add(((Depot) transaction).getPrenomDeposant());
 	}
 	
-	public Depot Depot(int index,int idTransaction,Date dateTransaction) {
+	public Depot Depot(int index,int idTransaction,LocalDateTime localDateTime) {
 		return new Depot(idTransaction,
-				dateTransaction,
+				localDateTime,
 				DataCompte.dataCompte.rechercher(this.idCompte.get(index)),
 				this.montant.get(index),
 				this.nomDeposant.get(index),
@@ -221,10 +222,10 @@ class DataTransfert{
 		this.description.add(((Transfert) transaction).getDescription());
 	}
 	
-	public Transfert transfert(int index,int idTransaction,Date dateTransaction) {
+	public Transfert transfert(int index,int idTransaction,LocalDateTime localDateTime) {
 		return new Transfert(
 				idTransaction,
-				dateTransaction,
+				localDateTime,
 				DataCompte.dataCompte.rechercher(this.idCompteDebiteur.get(index)),
 				this.montantDebiteur.get(index),
 				DataCompte.dataCompte.rechercher(this.idCompteCrediteur.get(index)),
@@ -268,9 +269,9 @@ class DataRetrait{
 		this.montant.add(((Retrait) transaction).getMontant());
 	}
 	
-	public Retrait retrait(int index,int idTransaction,Date dateTransaction) {
+	public Retrait retrait(int index,int idTransaction,LocalDateTime localDateTime) {
 		return new Retrait(idTransaction,
-				dateTransaction,
+				localDateTime,
 				DataCompte.dataCompte.rechercher(this.idCompte.get(index)),
 				this.montant.get(index)
 				);
