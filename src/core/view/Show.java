@@ -135,11 +135,11 @@ public abstract class Show {
             displayFormat(15, compte2.getDevise());
             displayFormat(15, compte2.getSolde());
             displayFormat(15, compte2.getEtat());
-            if (compte2.getProprietaire().equals(null)) {
-                displayFormat(15, "");
-            } else {
+            // if (!compte2.getProprietaire().equals(null)) {
                 displayFormat(15, compte2.getProprietaire());
-            }
+            // } else {
+            //     displayFormat(15, "");
+            // }
             System.out.println();
         }
     }
