@@ -36,7 +36,7 @@ public abstract class Show {
     public static void gestionClient() {
 
         display("\n-----------------------------------------------------------------------------------------------------");
-        display("****************************************Gestion Des Comptes****************************************");
+        display("****************************************Gestion Des Clients****************************************");
         display("----------------------------------------------------------------------------------------------------\n");
 
         display(" 1. Enregistrer un client");
@@ -51,7 +51,7 @@ public abstract class Show {
 
     public static void gestionTransaction() {
         display("\n-----------------------------------------------------------------------------------------------------");
-        display("****************************************Gestion Des Comptes****************************************");
+        display("****************************************Gestion Des Transaction****************************************");
         display("----------------------------------------------------------------------------------------------------\n");
 
         display("1. depot");
@@ -92,12 +92,12 @@ public abstract class Show {
     }
 
     private static void barnerCompte() {
-        displayFormat(15, "numero");
-        displayFormat(15, "type");
-        displayFormat(15, "devise");
-        displayFormat(15, "solde");
-        displayFormat(15, "etat");
-        displayFormat(15, "proprietaire");
+        displayFormat(15, "Numero");
+        displayFormat(15, "Type");
+        displayFormat(15, "Devise");
+        displayFormat(15, "Solde");
+        displayFormat(15, "Etat");
+        displayFormat(15, "Proprietaire");
 
         display("\n-----------------------------------------------------------------------------------------------------------------");
 
@@ -120,13 +120,13 @@ public abstract class Show {
     }
 
     public static void displayTransaction(ArrayList<Transaction> transaction) {
-        display("\n\n*******************************Affichage des Clients************************\n");
+        display("\n\n*******************************Affichage des Transactions************************\n");
         barnerCompte();
         Show.display(transaction.toString());
     }
 
     public static void displayCompte(ArrayList<Compte> compte) {
-        display("\n\n*******************************Affichage des Clients************************\n");
+        display("\n\n*******************************Affichage des Comptes************************\n");
         barnerCompte();
         int i = 0;
         for (Compte compte2 : compte) {
@@ -135,7 +135,11 @@ public abstract class Show {
             displayFormat(15, compte2.getDevise());
             displayFormat(15, compte2.getSolde());
             displayFormat(15, compte2.getEtat());
-            displayFormat(15, compte2.getProprietaire());
+            if (compte2.getProprietaire().equals(null)) {
+                displayFormat(15, "");
+            } else {
+                displayFormat(15, compte2.getProprietaire());
+            }
             System.out.println();
         }
     }
@@ -163,11 +167,15 @@ public abstract class Show {
     }
 
     // public static void disFormat(Object o) {
-    //     System.out.print(String.format("%15s", o));
+    // System.out.print(String.format("%15s", o));
     // }
 
     // public static void viewFormat(Object o) {
-    //     String.format("%-15s", o);
+    // String.format("%-15s", o);
     // }
+
+    public static void isNull() {
+
+    }
 
 }
