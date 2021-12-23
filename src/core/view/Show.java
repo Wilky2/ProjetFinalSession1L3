@@ -9,7 +9,7 @@ import core.model.transaction.Transaction;
 import core.model.transaction.Transfert;
 
 public abstract class Show {
-    public static void menuShow() {
+	public static void menuShow() {
 
         display("\n-----------------------------------------------------------------------------------------------------");
         display("  ****************************************MENU PRINCIPAL****************************************");
@@ -18,21 +18,22 @@ public abstract class Show {
         display(" 1. Gestion de compte");
         display(" 2. Gestion de client");
         display(" 3. Gestion des transactions");
+        display(" 4. Taux de change");
         display(" 0. Quitter le programme\n");
         display(" Choix :... ");
 
     }
-
-    public static void gestionCompte() {
+	
+	public static void gestionCompte() {
         display("\n-----------------------------------------------------------------------------------------------------");
         display("****************************************Gestion Des Comptes****************************************");
         display("----------------------------------------------------------------------------------------------------\n");
 
         display(" 1. Creer des comptes");
-        display(" 2. fermer un compte");
+        display(" 2. modifier un compte");
         display(" 3. Lister les comptes");
         display(" 4. Recherche un compter");
-        display(" 0. Retour au menu principal");
+        display(" 0. Retour au menu principal"); 
     }
 
     public static void gestionClient() {
@@ -78,6 +79,29 @@ public abstract class Show {
         display("7. Modifier le telephone");
         display("0. modifier le client et retour au menu client");
     }
+    
+    public static void menuTaux() { 
+    	display("\n-----------------------------------------------------------------------------------------------------");
+        display("**************************************** Taux de change ****************************************");
+        display("----------------------------------------------------------------------------------------------------\n");
+
+    	display(" 1. Verifier le taux de change");
+    	display(" 2. Changer le taux de change");
+    	display(" 0. Retour au menu principal");
+    }
+    
+    
+    public static void menuListerTransaction() {
+    	display("\n-----------------------------------------------------------------------------------------------------");
+        display("**************************************** Menu Liste Transaction****************************************");
+        display("----------------------------------------------------------------------------------------------------\n");
+
+    	display("1. Lister tous les transaction");
+    	display("2. Lister les depots");
+    	display("3. Lister les retraits");
+    	display("4. Lister les transferts");
+    	display("0. Retour au menu transaction");
+    }
 
     public static void barnerClient() {
         displayFormat(15, "IdClient");
@@ -99,17 +123,7 @@ public abstract class Show {
         displayFormat(15, "Devise");
         displayFormat(15, "Solde");
         displayFormat(15, "Etat");
-        displayFormat(15, "Proprietaire");
-
-        display("\n-----------------------------------------------------------------------------------------------------------------");
-
-    }
-
-    private static void barnerTransaction() {
-
-        displayFormat(15, "idTransaction");
-        displayFormat(15, "dateTransaction");
-        displayFormat(15, "type");
+        displayFormat(15, "Id Proprietaire");
 
         display("\n-----------------------------------------------------------------------------------------------------------------");
 
@@ -133,32 +147,25 @@ public abstract class Show {
 
     public static void displayTransaction(ArrayList<Transaction> transaction) {
         display("\n\n*******************************Affichage des Transactions************************\n");
-        barnerTransaction();
-        int i = 0;
-        for (Transaction transaction2 : transaction) {
-            displayFormat(15, transaction2.getIdTransaction());
-            displayFormat(15, transaction2.getDateTransaction());
-            displayFormat(15, transaction2.getType());
-
-            System.out.println();
-        }
+        barnerCompte();
+        Show.display(transaction.toString());
     }
 
     public static void displayCompte(ArrayList<Compte> compte) {
         display("\n\n*******************************Affichage des Comptes************************\n");
         barnerCompte();
-        int i = 0;
+        int i = 0; 
         for (Compte compte2 : compte) {
             displayFormat(15, compte2.getNumero());
             displayFormat(15, compte2.getType());
             displayFormat(15, compte2.getDevise());
             displayFormat(15, compte2.getSolde());
             displayFormat(15, compte2.getEtat());
-            // if (!compte2.getProprietaire().equals(null)) {
-            displayFormat(15, compte2.getProprietaire());
-            // } else {
-            // displayFormat(15, "");
-            // }
+            if (compte2.getProprietaire()!=null) {
+                displayFormat(15, compte2.getProprietaire().getIdClient());
+            } else {
+                displayFormat(15, "");
+            }
             System.out.println();
         }
     }
@@ -174,8 +181,18 @@ public abstract class Show {
             displayFormat(15, client2.getType());
             displayFormat(15, client2.getSexe());
             displayFormat(15, client2.getAdresse());
-            displayFormat(15, client2.getNif());
-            displayFormat(15, client2.getTelephone());
+            if(client2.getNif()!=null) {
+            	displayFormat(15, client2.getNif());
+            }
+            else {
+            	displayFormat(15, "");
+            }
+            if(client2.getTelephone()!=null) {
+            	displayFormat(15, client2.getTelephone());
+            }
+            else {
+            	displayFormat(15, "");
+            }
             System.out.println();
         }
 

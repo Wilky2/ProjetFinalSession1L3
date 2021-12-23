@@ -43,7 +43,7 @@ public class DataTransaction {
 		case transfert:{
 			DataTransfert.dataTransfert.enregistrer(transaction);
 		}break;
-		
+		 
 		case retrait:{
 			DataRetrait.dataRetrait.enregistrer(transaction);
 		}break;
@@ -141,6 +141,16 @@ public class DataTransaction {
 		ArrayList<Transaction> listeTransaction = new ArrayList<Transaction>();
 		for(int i = 0 ; i< this.idTransaction.size();i++) {
 			listeTransaction.add(this.rechercher(this.idTransaction.get(i)));
+		}
+		return listeTransaction;
+	}
+	
+	public ArrayList<Transaction> lister(TypeTransaction type){
+		ArrayList<Transaction> listeTransaction = new ArrayList<Transaction>();
+		for(int i = 0 ; i< this.idTransaction.size();i++) {
+			if(this.type.get(i) == type) {
+				listeTransaction.add(this.rechercher(this.idTransaction.get(i)));
+			}
 		}
 		return listeTransaction;
 	}
