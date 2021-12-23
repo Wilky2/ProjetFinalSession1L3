@@ -1,6 +1,9 @@
 package core.model.client;
 
-import core.view.Show;
+
+/*
+ * Classe permettant de gerere les clients
+*/
 
 public class Client {
 	private String idClient;
@@ -10,14 +13,14 @@ public class Client {
 	private Sexe sexe;
 	private String adresse;
 	private String nif;
-	private String telephone;
+	private String telephone; 
 	
 	public Client(String idClient, String nom, String prenom, TypeClient type, Sexe sexe, String adresse, String nif,String telephone) {
 		super();
-		this.idClient = idClient;
+		this.idClient = idClient; 
 		this.nom = nom;
 		this.prenom = prenom;
-		this.type = type;
+		this.type = type; 
 		this.sexe = sexe;
 		this.adresse = adresse;
 		this.nif = nif;
@@ -101,12 +104,19 @@ public class Client {
 	}
 
 	@Override
-	public String toString() {
-
-			return idClient + " "  + nom + " "  + prenom  + " "  + type.getType() + " "  + sexe.getSexe() + " "  + adresse + " "  +nif + " "  + telephone;
+	public String toString() { 
+			String n = "";
+			String t = "";
+			if(nif != null) {
+				nif = this.nif;
+			}
+			if(telephone!=null) {
+				telephone = this.telephone;
+			}
+			return idClient + " "  + nom + " "  + prenom  + " "  + type.getType() + " "  + sexe.getSexe() + " "  + adresse + " "  +n + " "  + t;
 	
 				// return "idClient=" + idClient + ", nom=" + nom + ", prenom=" + prenom + ", type=" + type.getType() + ", sexe="
 				// + sexe.getSexe() + ", adresse=" + adresse + ", nif=" + nif + ", telephone=" + telephone;
 	
-	}	
+	}
 }

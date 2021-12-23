@@ -10,9 +10,9 @@ import core.model.compte.TypeCompte;
 
 public class Generate {
 
-    int idClient;
-    int numeroCompte;
-    int idTransaction;
+    private int idClient;
+    private int numeroCompte;
+    private int idTransaction;
     
     public static Generate generate = new Generate();
     
@@ -35,6 +35,9 @@ public class Generate {
     }
     
     public String generateIdClient(String nom,String prenom) {
+    	/*
+    	 * 1er caracter nom + 1er caracter prenom + valeur variable idClient
+    	 */
     	String idClient = nom.substring(0,1) + prenom.substring(0,1) + this.idClient;
     	this.idClient ++;
     	return idClient;

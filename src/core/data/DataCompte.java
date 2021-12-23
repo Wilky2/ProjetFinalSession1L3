@@ -20,7 +20,7 @@ public class DataCompte {
 	private ArrayList<String> idProprietaire;
 	
 	public static DataCompte dataCompte = new DataCompte();
-	
+	 
 	private DataCompte(){
 		super();
 		this.numeroCompte = new ArrayList<Integer>();
@@ -37,7 +37,7 @@ public class DataCompte {
 		this.devise.add(compte.getDevise());
 		this.solde.add(compte.getSolde());
 		this.etat.add(compte.getEtat());
-		if(compte.getProprietaire() == null) {
+		if(compte.getProprietaire() == null) { 
 			this.idProprietaire.add(null);
 		}
 		else {

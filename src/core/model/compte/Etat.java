@@ -11,5 +11,5 @@ public enum Etat {
 
 	public String getEtat() {
 		return etat;
-	}
+	} 
 }

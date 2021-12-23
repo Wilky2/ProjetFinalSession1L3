@@ -102,7 +102,7 @@ public class Controller {
 			
 			switch(choix) {
 			
-			case 0:{
+			case 0:{ 
 				
 			}break;
 			
@@ -111,8 +111,11 @@ public class Controller {
 			}break;
 			
 			case 2:{
-				Show.display("Entre le nouveau taux");
-				Transaction.tauxGourdeEnDollar = read.readInt();
+				do {
+					Show.display("Entre le nouveau taux");
+					Transaction.tauxGourdeEnDollar = read.readInt();
+				}while(Transaction.tauxGourdeEnDollar<=0);
+					
 			}break;
 			
 			default:{
@@ -142,11 +145,12 @@ public class Controller {
 	            	case 0:{
 	            		
 	            	}break;
-	            	
-	                case 1:{
+ 	            	
+	                case 1:{ 
 	                    Show.display("Entrer l'id du compte sur lequel vous voulez deposer le montant");
 	                    Compte compte = DataCompte.dataCompte.rechercher(read.readInt());
 	                    if(compte!=null){
+	                    	Show.display("information sur le compte avant le depot");
 	                    	Show.display(compte);
 	                    	Show.display("Entrer le montant du depot");
 	                    	double montant = read.readDouble();
@@ -164,6 +168,7 @@ public class Controller {
 	                    	transaction.effectuer();
 	                    	DataCompte.dataCompte.modifier(compte);
 	                    	DataTransaction.dataTransaction.enregistrer(transaction);
+	                    	Show.display("information sur le compte apres le depot");
 	                    	Show.display(DataCompte.dataCompte.rechercher(compte.getNumero()));
 	                    }
 	                    else {
@@ -175,6 +180,7 @@ public class Controller {
 	                	Show.display("Entrer l'id du compte sur lequel vous voulez effectuer le retrait");
 	                    Compte compte = DataCompte.dataCompte.rechercher(read.readInt());
 	                    if(compte!=null) {
+	                    	Show.display("information sur le compte avant le retrait\n");
 	                    	Show.display(compte);
 	                    	Show.display("Ëntrer le montant du retrait");
 	                    	double montant = read.readDouble();
@@ -186,6 +192,7 @@ public class Controller {
 	                    	transaction.effectuer();
 	                    	DataCompte.dataCompte.modifier(compte);
 	                    	DataTransaction.dataTransaction.enregistrer(transaction);
+	                    	Show.display("information sur le compte apres le retrait\n");
 	                    	Show.display(DataCompte.dataCompte.rechercher(compte.getNumero()));
 	                    }
 	                    else {
@@ -198,13 +205,16 @@ public class Controller {
 	                	Show.display("Entrer l'id du compte debiteur");
 	                    Compte compteDebiteur = DataCompte.dataCompte.rechercher(read.readInt());
 	                    if(compteDebiteur!=null) {
+	                    	Show.display("information sur le compte debiteur avant le transfert");
 	                    	Show.display(compteDebiteur);
 	                    	Show.display("Entrer le montant a debiter");
 	                    	double montantDebiteur = read.readDouble();
 	                    	Show.display("Entrer l'id du compte crediteur");
 	                    	Compte compteCrediteur = DataCompte.dataCompte.rechercher(read.readInt());
 	                    	if(compteCrediteur!=null) {
+	                    		Show.display("information sur le compte crediteur avant le transfert");
 	                    		Show.display(compteCrediteur);
+	                    		Show.display("\n");
 	                    		Show.display("Entre le montant a crediter");
 	                    		double montantCrediteur = read.readDouble();
 	                    		Show.display("Description du transfert");
@@ -221,12 +231,12 @@ public class Controller {
 	                    		DataCompte.dataCompte.modifier(compteDebiteur);
 	                    		DataCompte.dataCompte.modifier(compteCrediteur);
 		                    	DataTransaction.dataTransaction.enregistrer(transaction);
-		                    	Show.display("Etat du compte debiteur");
+		                    	Show.display("information sur le compte debiteur apres le transfert");
 		                    	Show.display(DataCompte.dataCompte.rechercher(compteDebiteur.getNumero()));
-		                    	Show.display("Etat du compte crediteur");
+		                    	Show.display("information sur le compte crediteur apres le transfert");
 		                    	Show.display(DataCompte.dataCompte.rechercher(compteCrediteur.getNumero()));
 	                    	}
-	                    	else {
+	                    	else { 
 	                    		Show.display("Le compte crediteur n'existe pas");
 	                    	}
 	                    }
@@ -362,9 +372,15 @@ public class Controller {
                         modifierCompteMain();
                         break;
 
-                    case 3:
-                        Show.displayCompte(DataCompte.dataCompte.lister());
-                        break;
+                    case 3:{
+                    	ArrayList<Compte> compte = DataCompte.dataCompte.lister();
+                    	if(compte.isEmpty()) {
+                    		Show.display("La liste des comptes est vide");
+                    	}
+                    	else {
+                    		Show.displayCompte(compte);
+                    	}	
+                    }break;
 
                     case 4:
                     	Show.display("Entrer le numero du compte a rechercher");
@@ -423,7 +439,13 @@ public class Controller {
                         modifierClientMain();
                         break;
                     case 3:
-                        Show.displayClient(DataClient.dataClient.lister());
+                    	ArrayList<Client> listeClient = DataClient.dataClient.lister();
+                    	if(listeClient.isEmpty()) {
+                    		Show.display("La liste des clients est vide");
+                    	}
+                    	else {
+                    		Show.displayClient(DataClient.dataClient.lister());
+                    	}	
                         break;
                     case 4:
                         supprimerIdClient();
@@ -434,7 +456,7 @@ public class Controller {
                         Client client = DataClient.dataClient.rechercher(idClient);
                         if(client == null) {
                         	Show.display("Le client ne se trouve pas dans la base de donnée");
-                        }
+                        } 
                         else {
                         	Show.display(client);
                         }	
@@ -509,12 +531,12 @@ public class Controller {
 	    	  montantBase = 10;
 	     }
 	       
-	     double montant;
-	       
-	     do {
-	    	 Show.display("Entrer le montant superieur a :" + montantBase);
-	    	 montant = read.readDouble();
-	     }while(montant < montantBase);
+	    Show.display("Entrer le montant superieur a :" + montantBase);
+	    double   montant = read.readDouble();
+	    if(montant < montantBase) {
+	    	Show.display("Vous ne pouvez pas ouvrir un compte avec ce montant");
+	    	return;
+	    }
 	     
 	   compte.setProprietaire(client);
 	   compte.setEtat(Etat.A);
@@ -577,8 +599,12 @@ public class Controller {
         }	
         
         DataCompte.dataCompte.modifier(compte);
-        
-        Show.display("Le compte est a present ferme");
+        if(compte.getEtat() == Etat.F) {
+        	Show.display("Le compte est a present ferme");
+        }
+        else {
+        	Show.display("Le compte est a present ouvert");
+        }
 
     }
 
@@ -702,11 +728,11 @@ public class Controller {
 
         Show.display("Entrer le prenom du Client : ");
         prenom = read.readString();
-        
+         
         Sexe sexe;
         
         TypeClient typeClient = typeClientValue();
-        
+         
         if(typeClient == TypeClient.Moral) {
         	sexe = Sexe.aucun;
         }
@@ -752,14 +778,17 @@ public class Controller {
        }
        else {
     	   montantBase = 10;
+       } 
+       
+       double montant; 
+       
+       
+       Show.display("Entrer le montant superieur a :" + montantBase);
+       montant = read.readDouble();
+       if(montant < montantBase) {
+    	   Show.display("Vous ne pouvez pas ouvrir un compte avec ce montant");
+    	   return;
        }
-       
-       double montant;
-       
-       do {
-    	   Show.display("Entrer le montant superieur a :" + montantBase);
-    	   montant = read.readDouble();
-       }while(montant < montantBase);
        
        idClient = 	Generate.generate.generateIdClient(nom,prenom);
        
@@ -797,35 +826,39 @@ public class Controller {
 	        case 1 : {
 	        	Show.display("Entrer le nouveau nom du Client");
 		        client.setNom(read.readString());
-	        }
+	        }break;
 	        
 	        case 2 :{
 	        	Show.display("Entrer le nouveau prenom du Client");
 			    client.setPrenom(read.readString());
-	        }
+	        }break;
 	        
 	        case 3:{
 	        	client.setType(typeClientValue());
-	        }
+	        }break;
 	        
 	        case 4:{
 	        	client.setSexe(sexeClientValue());
-	        }
+	        }break;
 	        
 	        case 5:{
 	        	Show.display("Entrer la nouvelle adresse du Client");
 		        client.setAdresse(read.readString());
-	        }
+	        }break;
 	        
 	        case 6:{
 	        	Show.display("Entrer le nouveau nif du Client");
 		        client.setNif(read.readString());
-	        }
-	        
+	        }break;
+	         
 	        case 7:{
 	        	Show.display("Entrer le nouveau numero telphone du Client");
 		        client.setTelephone(read.readString());
-	        }
+	        }break;
+	        
+	        default:{
+	        	Show.display("Mauvais choix");
+	        }break;
 	        }
 	        
 	        }

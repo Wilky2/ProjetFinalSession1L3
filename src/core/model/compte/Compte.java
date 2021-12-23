@@ -3,6 +3,9 @@ package core.model.compte;
 import core.model.client.Client;
 import core.model.exception.MontantNonValideException;
 
+/*
+ * Classe permettant de gerer les comptes
+ */
 public class Compte {
 	private int numero;
 	private TypeCompte type;
@@ -81,22 +84,40 @@ public class Compte {
 		this.proprietaire = proprietaire;
 	}
 
+	/*
+	 * methode permettant de reduire le montant d'un compte
+	 */
 	public void debiter(double montant) throws MontantNonValideException {
-		if(montant>this.getSolde() || montant < 0) {
+		/*
+		 * verification si le montant est valide
+		 * pas de montant superieur au solde du compte 
+		 * pas de montant inferieur a 0
+		 */
+		if(montant>=this.getSolde() || montant <= 0) {
 			throw new MontantNonValideException();
 		}
-		this.setSolde(this.getSolde() -montant);
+		this.setSolde(this.getSolde() - montant);
 	}
 	
+	/*
+	 * methode permettant d'augmenter le montant d'un compte
+	 */
 	public void crediter(double montant) throws MontantNonValideException {
-		if(montant < 0) {
+		/*
+		 * pas de montant inferieur a zero
+		 */
+		if(montant <= 0) {
 			throw new MontantNonValideException();
 		}
-		this.setSolde(this.getSolde() + montant);
+		this.setSolde(this.getSolde() + montant);  
 	}
 
 	@Override
 	public String toString() {
-		return numero  + " "  + type.getType()  + " "  + devise.getDevise()  + " "  + solde  + " "  + etat.getEtat()  + " "  + proprietaire.getIdClient();
+		String idProprietaire = "";
+		if(proprietaire!=null) {
+			idProprietaire = proprietaire.getIdClient();
+		}
+		return numero  + " "  + type.getType()  + " "  + devise.getDevise()  + " "  + solde  + " "  + etat.getEtat()  + " "  + idProprietaire;
 	}
 }

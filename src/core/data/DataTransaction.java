@@ -17,6 +17,7 @@ public class DataTransaction {
 	private ArrayList<Integer> idTransaction;
 	private ArrayList<LocalDateTime> dateTransaction;
 	private ArrayList<TypeTransaction> type;
+	private ArrayList<Integer> indexType;
 	
 	public static DataTransaction dataTransaction = new DataTransaction();
 	
@@ -25,8 +26,9 @@ public class DataTransaction {
 		this.idTransaction = new ArrayList<Integer>();
 		this.dateTransaction = new ArrayList<LocalDateTime>();
 		this.type = new ArrayList<TypeTransaction>();
+		this.indexType = new ArrayList<Integer>();
 	}
-
+	
 	public void enregistrer(Transaction transaction) {
 		
 		TypeTransaction typeTransaction = transaction.getType();
@@ -35,17 +37,17 @@ public class DataTransaction {
 		this.type.add(typeTransaction);
 		
 		switch(typeTransaction) {
-		
+		 
 		case depot :{
-			DataDepot.dataDepot.enregistrer(transaction);
+			indexType.add(DataDepot.dataDepot.enregistrer(transaction));
 		}break;
 		
 		case transfert:{
-			DataTransfert.dataTransfert.enregistrer(transaction);
-		}break;
+			indexType.add(DataTransfert.dataTransfert.enregistrer(transaction));
+		}break; 
 		 
-		case retrait:{
-			DataRetrait.dataRetrait.enregistrer(transaction);
+		case retrait:{ 
+			indexType.add(DataRetrait.dataRetrait.enregistrer(transaction));
 		}break;
 		
 		}
@@ -59,19 +61,19 @@ public class DataTransaction {
 		
 		Transaction transaction = null;
 		TypeTransaction typeTransaction = this.type.get(indexIdTransaction);
-		
+		 
 		switch(typeTransaction) {
 		
 		case depot :{
-			return DataDepot.dataDepot.Depot(indexIdTransaction, idTransaction.get(indexIdTransaction), dateTransaction.get(indexIdTransaction));
+			return DataDepot.dataDepot.Depot(indexType.get(indexIdTransaction), idTransaction.get(indexIdTransaction), dateTransaction.get(indexIdTransaction));
 		}
 		
 		case transfert:{
-			return DataTransfert.dataTransfert.transfert(indexIdTransaction, idTransaction.get(indexIdTransaction), dateTransaction.get(indexIdTransaction));
+			return DataTransfert.dataTransfert.transfert(indexType.get(indexIdTransaction), idTransaction.get(indexIdTransaction), dateTransaction.get(indexIdTransaction));
 		}
 		
 		case retrait:{
-			return DataRetrait.dataRetrait.retrait(indexIdTransaction, idTransaction.get(indexIdTransaction), dateTransaction.get(indexIdTransaction));
+			return DataRetrait.dataRetrait.retrait(indexType.get(indexIdTransaction), idTransaction.get(indexIdTransaction), dateTransaction.get(indexIdTransaction));
 		}
 		
 		default :{
@@ -94,15 +96,15 @@ public class DataTransaction {
 		switch(typeTransaction) {
 		
 		case depot :{
-			DataDepot.dataDepot.modifier(indexIdTransaction,transaction);
+			DataDepot.dataDepot.modifier(indexType.get(indexIdTransaction),transaction);
 		}break;
-		
+		 
 		case transfert:{
-			DataTransfert.dataTransfert.modifier(indexIdTransaction,transaction);
+			DataTransfert.dataTransfert.modifier(indexType.get(indexIdTransaction),transaction);
 		}break;
 		
 		case retrait:{
-			DataRetrait.dataRetrait.modifier(indexIdTransaction,transaction);
+			DataRetrait.dataRetrait.modifier(indexType.get(indexIdTransaction),transaction);
 		}break;
 		
 		}
@@ -123,15 +125,15 @@ public class DataTransaction {
 		switch(typeTransaction) {
 		
 		case depot :{
-			DataDepot.dataDepot.supprimer(indexIdTransaction);
+			DataDepot.dataDepot.supprimer(indexType.get(indexIdTransaction));
 		}break;
 		
 		case transfert:{
-			DataTransfert.dataTransfert.supprimer(indexIdTransaction);
+			DataTransfert.dataTransfert.supprimer(indexType.get(indexIdTransaction));
 		}break;
 		
 		case retrait:{
-			DataRetrait.dataRetrait.supprimer(indexIdTransaction);
+			DataRetrait.dataRetrait.supprimer(indexType.get(indexIdTransaction));
 		}break;
 		
 		}
@@ -174,11 +176,12 @@ class DataDepot{
 		this.prenomDeposant = new ArrayList<String>();
 	}
 
-	public void enregistrer(Transaction transaction) {
+	public int enregistrer(Transaction transaction) {
 		this.idCompte.add(((Depot) transaction).getCompte().getNumero());
 		this.montant.add(((Depot) transaction).getMontant());
 		this.nomDeposant.add(((Depot) transaction).getNomDeposant());
 		this.prenomDeposant.add(((Depot) transaction).getPrenomDeposant());
+		return this.idCompte.size()-1;
 	}
 	
 	public Depot Depot(int index,int idTransaction,LocalDateTime localDateTime) {
@@ -224,12 +227,13 @@ class DataTransfert{
 		this.description = new ArrayList<String>();
 	}
 	
-	public void enregistrer(Transaction transaction) {
+	public int enregistrer(Transaction transaction) {
 		this.idCompteDebiteur.add(((Transfert) transaction).getCompteDebiteur().getNumero());
 		this.montantDebiteur.add(((Transfert) transaction).getMontantDebiteur());
 		this.idCompteCrediteur.add(((Transfert) transaction).getCompteCrediteur().getNumero());
 		this.montantCrediteur.add(((Transfert) transaction).getMontantCrediteur());
 		this.description.add(((Transfert) transaction).getDescription());
+		return this.idCompteDebiteur.size()-1;
 	}
 	
 	public Transfert transfert(int index,int idTransaction,LocalDateTime localDateTime) {
@@ -267,16 +271,17 @@ class DataRetrait{
 	private ArrayList<Double> montant;
 	
 	public static DataRetrait dataRetrait = new DataRetrait();
-
+ 
 	private DataRetrait() {
 		super();
 		this.idCompte = new ArrayList<Integer>();
 		this.montant = new ArrayList<Double>();
 	}
 	
-	public void enregistrer(Transaction transaction) {
+	public int enregistrer(Transaction transaction) {
 		this.idCompte.add(((Retrait) transaction).getCompte().getNumero());
 		this.montant.add(((Retrait) transaction).getMontant());
+		return this.idCompte.size()-1;
 	}
 	
 	public Retrait retrait(int index,int idTransaction,LocalDateTime localDateTime) {

@@ -46,7 +46,10 @@ public class Retrait extends Transaction{
 
 	@Override
 	public void effectuer() throws MontantNonValideException, CompteNonValideException {
-		
+		/*
+		 * verification si le compte est attribue, 
+		 * si ce n'est pas le cas on leve une exception
+		 */
 		if(this.compte.getEtat() != Etat.A) {
 			throw new CompteNonValideException();
 		}
@@ -59,7 +62,7 @@ public class Retrait extends Transaction{
 
 	@Override
 	public String toString() {
-		return compte + " "  +  montant + " "  + super.toString();
+		return "Retrait [compte=" + compte + ", montant=" + montant + ", toString()=" + super.toString() + "]";
 	}
 	
 }

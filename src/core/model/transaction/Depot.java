@@ -8,6 +8,9 @@ import core.model.compte.Etat;
 import core.model.exception.CompteNonValideException;
 import core.model.exception.MontantNonValideException;
 
+/*
+ * Classe gerant les depots
+ */
 public class Depot extends Transaction {
 	
 	private Compte compte;
@@ -25,7 +28,7 @@ public class Depot extends Transaction {
 		this.prenomDeposant = prenomDeposant;
 	}
 
-	public Compte getCompte() {
+	public Compte getCompte() { 
 		return compte;
 	}
 
@@ -75,7 +78,10 @@ public class Depot extends Transaction {
 
 	@Override
 	public void effectuer() throws MontantNonValideException, CompteNonValideException {
-		
+		/*
+		 * verification si le compte est attribue, 
+		 * si ce n'est pas le cas on leve une exception
+		 */
 		if(this.compte.getEtat() != Etat.A) {
 			throw new CompteNonValideException();
 		}
@@ -86,8 +92,8 @@ public class Depot extends Transaction {
 
 	@Override
 	public String toString() {
-		return compte + " "  + montant + " "  + nomDeposant + " "  + prenomDeposant
-		+ " "  + super.toString();
+		return "Depot [compte=" + compte + ", montant=" + montant + ", nomDeposant=" + nomDeposant + ", prenomDeposant="
+				+ prenomDeposant + ", toString()=" + super.toString() + "]";
 	}
 	
 }

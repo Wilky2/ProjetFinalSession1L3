@@ -6,6 +6,11 @@ import java.util.Date;
 import core.model.exception.CompteNonValideException;
 import core.model.exception.MontantNonValideException;
 
+/*
+ * Classe abstraite destinee a servir de classe mere pour toutes les classes
+ * qui vont gerer differents types de transaction, tel que les depots, les retraits
+ * les transferts etc...
+ */
 public abstract class Transaction {
 	private int idTransaction;
 	private LocalDateTime dateTransaction;
@@ -43,11 +48,15 @@ public abstract class Transaction {
 		this.type = type;
 	}
 
+	/*
+	 * methode a appeler pour valider la transaction
+	 */
 	abstract public void effectuer() throws MontantNonValideException, CompteNonValideException;
 
 	@Override
 	public String toString() {
-		return idTransaction + " "  + dateTransaction  + " "  + type.getType();
+		return "Transaction [idTransaction=" + idTransaction + ", dateTransaction=" + dateTransaction + ", type=" + type.getType()
+				+ "]";
 	}
 	
 	

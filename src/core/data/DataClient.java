@@ -15,7 +15,7 @@ public class DataClient {
 	private ArrayList<Sexe> sexe;
 	private ArrayList<String> adresse;
 	private ArrayList<String> nif;
-	private ArrayList<String> telephone;
+	private ArrayList<String> telephone; 
 	
 	public static DataClient dataClient = new DataClient(); 
 	
