@@ -1,5 +1,7 @@
 package core.model.client;
 
+import core.view.Show;
+
 public class Client {
 	private String idClient;
 	private String nom;
@@ -100,8 +102,11 @@ public class Client {
 
 	@Override
 	public String toString() {
-		
-		return "idClient=" + idClient + ", nom=" + nom + ", prenom=" + prenom + ", type=" + type.getType() + ", sexe="
-				+ sexe.getSexe() + ", adresse=" + adresse + ", nif=" + nif + ", telephone=" + telephone;
+
+			return idClient + " "  + nom + " "  + prenom  + " "  + type.getType() + " "  + sexe.getSexe() + " "  + adresse + " "  +nif + " "  + telephone;
+	
+				// return "idClient=" + idClient + ", nom=" + nom + ", prenom=" + prenom + ", type=" + type.getType() + ", sexe="
+				// + sexe.getSexe() + ", adresse=" + adresse + ", nif=" + nif + ", telephone=" + telephone;
+	
 	}	
 }

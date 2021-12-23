@@ -128,7 +128,7 @@ public class Controller {
 	                	Show.display("Entrer l'id du compte sur lequel vous voulez effectuer le retrait");
 	                    Compte compte = DataCompte.dataCompte.rechercher(read.readInt());
 	                    if(compte!=null) {
-	                    	Show.display("Ëntrer le montant du retrait");
+	                    	Show.display("ï¿½ntrer le montant du retrait");
 	                    	double montant = read.readDouble();
 	                    	Transaction transaction = new Retrait(Generate.generate.generatIdTransaction(),
 	                    			LocalDateTime.now(),
@@ -201,7 +201,7 @@ public class Controller {
 	        	Show.display("Le montant que vous avez entrer n'est pas valide");
 	        }
 	        catch(NoExistException e){
-	        	Show.display("Le compte ne se trouve pas dans notre base de donnée");
+	        	Show.display("Le compte ne se trouve pas dans notre base de donnï¿½e");
 	        }
 	        
 	        if(choice!=0) {
@@ -307,7 +307,7 @@ public class Controller {
                         String idClient = read.readString();
                         Client client = DataClient.dataClient.rechercher(idClient);
                         if(client == null) {
-                        	Show.display("Le client ne se trouve pas dans la base de donnée");
+                        	Show.display("Le client ne se trouve pas dans la base de donnï¿½e");
                         }
                         else {
                         	//Show.display(client);
@@ -348,7 +348,7 @@ public class Controller {
 		Show.display("Entrer l'id du client");
 		Client client = DataClient.dataClient.rechercher(read.readString());
 		if(client == null) {
-			Show.display("Le client n'existe pas dans la base de donnée");
+			Show.display("Le client n'existe pas dans la base de donnï¿½e");
 			return;
 		}
 		TypeCompte type = typeCompteValue();
@@ -406,7 +406,7 @@ public class Controller {
         }
         
         if(compte.getEtat() == Etat.N) {
-        	Show.display("Le compte n'est pas encore attribué");
+        	Show.display("Le compte n'est pas encore attribuï¿½");
         	return;
         }
         

@@ -97,7 +97,6 @@ public class Compte {
 
 	@Override
 	public String toString() {
-		return "numero=" + numero + ", type=" + type.getType() + ", devise=" + devise.getDevise() + ", solde=" + solde + ", etat="
-				+ etat.getEtat() + ", id proprietaire=" + proprietaire.getIdClient();
+		return numero  + " "  + type.getType()  + " "  + devise.getDevise()  + " "  + solde  + " "  + etat.getEtat()  + " "  + proprietaire.getIdClient();
 	}
 }

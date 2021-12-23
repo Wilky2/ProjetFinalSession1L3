@@ -9,7 +9,10 @@ import core.model.transaction.Transaction;
 public abstract class Show {
     public static void menuShow() {
 
-        display(" \n-----------------------------------------------MENU---------------------------------------------\n");
+        display("\n-----------------------------------------------------------------------------------------------------");
+        display("  ****************************************MENU PRINCIPAL****************************************");
+        display("----------------------------------------------------------------------------------------------------\n");
+
         display(" 1. Gestion de compte");
         display(" 2. Gestion de client");
         display(" 3. Gestion des transactions");
@@ -19,6 +22,10 @@ public abstract class Show {
     }
 
     public static void gestionCompte() {
+        display("\n-----------------------------------------------------------------------------------------------------");
+        display("****************************************Gestion Des Comptes****************************************");
+        display("----------------------------------------------------------------------------------------------------\n");
+
         display(" 1. Creer des comptes");
         display(" 2. fermer un compte");
         display(" 3. Lister les comptes");
@@ -27,6 +34,11 @@ public abstract class Show {
     }
 
     public static void gestionClient() {
+
+        display("\n-----------------------------------------------------------------------------------------------------");
+        display("****************************************Gestion Des Comptes****************************************");
+        display("----------------------------------------------------------------------------------------------------\n");
+
         display(" 1. Enregistrer un client");
         display(" 2. Modifier un client");
         display(" 3. Lister les clients");
@@ -36,52 +48,126 @@ public abstract class Show {
         display(" 7. Liste des comptes d'un client");
         display(" 0. retour au menu principal");
     }
-    
+
     public static void gestionTransaction() {
-    	display("1. depot");
-    	display("2. retrait");
-    	display("3. transfert");
-    	display("4. lister les transactions");
-    	display("0. retour au menu principal");
+        display("\n-----------------------------------------------------------------------------------------------------");
+        display("****************************************Gestion Des Comptes****************************************");
+        display("----------------------------------------------------------------------------------------------------\n");
+
+        display("1. depot");
+        display("2. retrait");
+        display("3. transfert");
+        display("4. lister les transactions");
+        display("0. retour au menu principal");
     }
-    
+
     public static void menuModifierClient() {
-    	display("1. Modifier le nom");
-    	display("2. Modifier le prenom");
-    	display("3. Modifier le type");
-    	display("4. Modifier le sexe");
-    	display("5. Modifier le adresse");
-    	display("6. Modifier le nif");
-    	display("7. Modifier le telephone");
-    	display("0. modifier le client et retour au menu client");
+
+        display("\n-----------------------------------------------------------------------------------------------------");
+        display("**************************************** Menu Modification Clients****************************************");
+        display("----------------------------------------------------------------------------------------------------\n");
+
+        display("1. Modifier le nom");
+        display("2. Modifier le prenom");
+        display("3. Modifier le type");
+        display("4. Modifier le sexe");
+        display("5. Modifier le adresse");
+        display("6. Modifier le nif");
+        display("7. Modifier le telephone");
+        display("0. modifier le client et retour au menu client");
+    }
+
+    public static void barnerClient() {
+        displayFormat(15, "IdClient");
+        displayFormat(15, "Nom");
+        displayFormat(15, "Prenom");
+        displayFormat(15, "Type");
+        displayFormat(15, "Sexe");
+        displayFormat(15, "Adresse");
+        displayFormat(15, "Nif");
+        displayFormat(15, "Telephone");
+
+        display("\n-----------------------------------------------------------------------------------------------------------------");
+
+    }
+
+    private static void barnerCompte() {
+        displayFormat(15, "numero");
+        displayFormat(15, "type");
+        displayFormat(15, "devise");
+        displayFormat(15, "solde");
+        displayFormat(15, "etat");
+        displayFormat(15, "proprietaire");
+
+        display("\n-----------------------------------------------------------------------------------------------------------------");
+
     }
 
     public static void display(Object o) {
         System.out.println(o);
     }
-    
+
     public static void display(Client client) {
         display(client.toString());
     }
-    
+
     public static void display(Compte compte) {
         display(compte.toString());
     }
-    
+
     public static void display(Transaction transaction) {
-    	display(transaction.toString());
+        display(transaction.toString());
     }
-    
+
     public static void displayTransaction(ArrayList<Transaction> transaction) {
-    	Show.display(transaction.toString());
+        display("\n\n*******************************Affichage des Clients************************\n");
+        barnerCompte();
+        Show.display(transaction.toString());
     }
-    
+
     public static void displayCompte(ArrayList<Compte> compte) {
-    	Show.display(compte.toString());
+        display("\n\n*******************************Affichage des Clients************************\n");
+        barnerCompte();
+        int i = 0;
+        for (Compte compte2 : compte) {
+            displayFormat(15, compte2.getNumero());
+            displayFormat(15, compte2.getType());
+            displayFormat(15, compte2.getDevise());
+            displayFormat(15, compte2.getSolde());
+            displayFormat(15, compte2.getEtat());
+            displayFormat(15, compte2.getProprietaire());
+            System.out.println();
+        }
     }
-    
+
     public static void displayClient(ArrayList<Client> client) {
-    	Show.display(client.toString());
+        display("\n\n*******************************Affichage des Clients************************\n");
+        barnerClient();
+        int i = 0;
+        for (Client client2 : client) {
+            displayFormat(15, client2.getIdClient());
+            displayFormat(15, client2.getNom());
+            displayFormat(15, client2.getPrenom());
+            displayFormat(15, client2.getType());
+            displayFormat(15, client2.getSexe());
+            displayFormat(15, client2.getAdresse());
+            displayFormat(15, client2.getNif());
+            displayFormat(15, client2.getTelephone());
+            System.out.println();
+        }
+
     }
+
+    public static void displayFormat(int length, Object o) {
+        System.out.print(String.format("%-" + length + "s", o));
+    }
+
+    // public static void disFormat(Object o) {
+    //     System.out.print(String.format("%15s", o));
+    // }
+
+    // public static void viewFormat(Object o) {
+    //     String.format("%-15s", o);
+    // }
 
 }
