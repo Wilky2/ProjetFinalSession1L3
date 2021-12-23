@@ -47,8 +47,7 @@ public abstract class Transaction {
 
 	@Override
 	public String toString() {
-		return "Transaction [idTransaction=" + idTransaction + ", dateTransaction=" + dateTransaction + ", type=" + type.getType()
-				+ "]";
+		return idTransaction + " "  + dateTransaction  + " "  + type.getType();
 	}
 	
 	

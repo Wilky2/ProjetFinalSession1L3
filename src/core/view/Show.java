@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import core.model.client.Client;
 import core.model.compte.Compte;
+import core.model.transaction.Depot;
 import core.model.transaction.Transaction;
+import core.model.transaction.Transfert;
 
 public abstract class Show {
     public static void menuShow() {
@@ -103,6 +105,16 @@ public abstract class Show {
 
     }
 
+    private static void barnerTransaction() {
+
+        displayFormat(15, "idTransaction");
+        displayFormat(15, "dateTransaction");
+        displayFormat(15, "type");
+
+        display("\n-----------------------------------------------------------------------------------------------------------------");
+
+    }
+
     public static void display(Object o) {
         System.out.println(o);
     }
@@ -121,8 +133,15 @@ public abstract class Show {
 
     public static void displayTransaction(ArrayList<Transaction> transaction) {
         display("\n\n*******************************Affichage des Transactions************************\n");
-        barnerCompte();
-        Show.display(transaction.toString());
+        barnerTransaction();
+        int i = 0;
+        for (Transaction transaction2 : transaction) {
+            displayFormat(15, transaction2.getIdTransaction());
+            displayFormat(15, transaction2.getDateTransaction());
+            displayFormat(15, transaction2.getType());
+
+            System.out.println();
+        }
     }
 
     public static void displayCompte(ArrayList<Compte> compte) {
@@ -136,9 +155,9 @@ public abstract class Show {
             displayFormat(15, compte2.getSolde());
             displayFormat(15, compte2.getEtat());
             // if (!compte2.getProprietaire().equals(null)) {
-                displayFormat(15, compte2.getProprietaire());
+            displayFormat(15, compte2.getProprietaire());
             // } else {
-            //     displayFormat(15, "");
+            // displayFormat(15, "");
             // }
             System.out.println();
         }
@@ -174,7 +193,66 @@ public abstract class Show {
     // String.format("%-15s", o);
     // }
 
-    public static void isNull() {
+    public static void barnerDepot() {
+
+        displayFormat(15, "idTransaction");
+        displayFormat(15, "dateTransaction");
+        displayFormat(15, "type");
+        displayFormat(15, "compte");
+        displayFormat(15, "montant");
+        displayFormat(15, "nomDeposant");
+        displayFormat(15, "prenomDeposant");
+
+        display("\n-----------------------------------------------------------------------------------------------------------------");
+
+    }
+
+    public static void displayDepot(ArrayList<Depot> depots) {
+        display("\n\n*******************************Affichage des Depots************************\n");
+        barnerTransaction();
+        int i = 0;
+        for (Depot depot2 : depots) {
+            displayFormat(15, depot2.getIdTransaction());
+            displayFormat(15, depot2.getDateTransaction());
+            displayFormat(15, depot2.getType());
+            displayFormat(15, depot2.getCompte());
+            displayFormat(15, depot2.getMontant());
+            displayFormat(15, depot2.getNomDeposant());
+            displayFormat(15, depot2.getPrenomDeposant());
+
+            System.out.println();
+        }
+    }
+
+    public static void barnerTransfert() {
+        displayFormat(15, "idTransaction");
+        displayFormat(15, "dateTransaction");
+        displayFormat(15, "type");
+        displayFormat(15, "compteDebiteur");
+        displayFormat(15, "montantDebiteur");
+        displayFormat(15, "compteCrediteur");
+        displayFormat(15, "montantCrediteur");
+        displayFormat(15, "description");
+
+        display("\n-----------------------------------------------------------------------------------------------------------------");
+
+    }
+
+    public static void displayTransfert(ArrayList<Transfert> transferts) {
+        display("\n\n*******************************Affichage des Transferts************************\n");
+        barnerTransaction();
+        int i = 0;
+
+        for (Transfert transfert2 : transferts) {
+            displayFormat(15, transfert2.getIdTransaction());
+            displayFormat(15, transfert2.getDateTransaction());
+            displayFormat(15, transfert2.getType());
+            displayFormat(15, transfert2.getCompteDebiteur());
+            displayFormat(15, transfert2.getMontantDebiteur());
+            displayFormat(15, transfert2.getCompteCrediteur());
+            displayFormat(15, transfert2.getMontantCrediteur());
+            displayFormat(15, transfert2.getDescription());
+        }
 
     }
 
