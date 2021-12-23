@@ -225,13 +225,13 @@ public abstract class Show {
 
     public static void barnerDepot() {
 
-        displayFormat(15, "idTransaction");
-        displayFormat(15, "dateTransaction");
-        displayFormat(15, "type");
-        displayFormat(15, "compte");
-        displayFormat(15, "montant");
-        displayFormat(15, "nomDeposant");
-        displayFormat(15, "prenomDeposant");
+        displayFormat(15, "Id Transaction");
+        displayFormat(15, "Date Transaction");
+        displayFormat(15, "Type");
+        displayFormat(15, "Compte");
+        displayFormat(15, "Montant");
+        displayFormat(15, "NomDeposant");
+        displayFormat(15, "PrenomDeposant");
 
         display("\n-----------------------------------------------------------------------------------------------------------------");
 
@@ -254,14 +254,14 @@ public abstract class Show {
     }
 
     public static void barnerTransfert() {
-        displayFormat(15, "idTransaction");
-        displayFormat(15, "dateTransaction");
-        displayFormat(15, "type");
-        displayFormat(15, "compteDebiteur");
-        displayFormat(15, "montantDebiteur");
-        displayFormat(15, "compteCrediteur");
-        displayFormat(15, "montantCrediteur");
-        displayFormat(15, "description");
+        displayFormat(15, "Id Transaction");
+        displayFormat(15, "Date Transaction");
+        displayFormat(15, "Type");
+        displayFormat(15, "CompteDebiteur");
+        displayFormat(15, "MontantDebiteur");
+        displayFormat(15, "CompteCrediteur");
+        displayFormat(15, "MontantCrediteur");
+        displayFormat(15, "Description");
 
         display("\n-----------------------------------------------------------------------------------------------------------------");
 
@@ -285,11 +285,11 @@ public abstract class Show {
     }
 
     public static void barnerRetrait() {
-        displayFormat(15, "idTransaction");
-        displayFormat(15, "dateTransaction");
-        displayFormat(15, "type");
-        displayFormat(15, "compte");
-        displayFormat(15, "montant");
+        displayFormat(15, "Id Transaction");
+        displayFormat(15, "Date Transaction");
+        displayFormat(15, "Type");
+        displayFormat(15, "Compte");
+        displayFormat(15, "Montant");
 
 
         display("\n-----------------------------------------------------------------------------------------------------------------");
