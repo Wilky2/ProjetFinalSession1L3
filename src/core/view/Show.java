@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import core.model.client.Client;
 import core.model.compte.Compte;
 import core.model.transaction.Depot;
+import core.model.transaction.Retrait;
 import core.model.transaction.Transaction;
 import core.model.transaction.Transfert;
 
 public abstract class Show {
-	public static void menuShow() {
+    public static void menuShow() {
 
         display("\n-----------------------------------------------------------------------------------------------------");
         display("  ****************************************MENU PRINCIPAL****************************************");
@@ -23,8 +24,8 @@ public abstract class Show {
         display(" Choix :... ");
 
     }
-	
-	public static void gestionCompte() {
+
+    public static void gestionCompte() {
         display("\n-----------------------------------------------------------------------------------------------------");
         display("****************************************Gestion Des Comptes****************************************");
         display("----------------------------------------------------------------------------------------------------\n");
@@ -33,7 +34,7 @@ public abstract class Show {
         display(" 2. modifier un compte");
         display(" 3. Lister les comptes");
         display(" 4. Recherche un compter");
-        display(" 0. Retour au menu principal"); 
+        display(" 0. Retour au menu principal");
     }
 
     public static void gestionClient() {
@@ -79,28 +80,27 @@ public abstract class Show {
         display("7. Modifier le telephone");
         display("0. modifier le client et retour au menu client");
     }
-    
-    public static void menuTaux() { 
-    	display("\n-----------------------------------------------------------------------------------------------------");
+
+    public static void menuTaux() {
+        display("\n-----------------------------------------------------------------------------------------------------");
         display("**************************************** Taux de change ****************************************");
         display("----------------------------------------------------------------------------------------------------\n");
 
-    	display(" 1. Verifier le taux de change");
-    	display(" 2. Changer le taux de change");
-    	display(" 0. Retour au menu principal");
+        display(" 1. Verifier le taux de change");
+        display(" 2. Changer le taux de change");
+        display(" 0. Retour au menu principal");
     }
-    
-    
+
     public static void menuListerTransaction() {
-    	display("\n-----------------------------------------------------------------------------------------------------");
+        display("\n-----------------------------------------------------------------------------------------------------");
         display("**************************************** Menu Liste Transaction****************************************");
         display("----------------------------------------------------------------------------------------------------\n");
 
-    	display("1. Lister tous les transaction");
-    	display("2. Lister les depots");
-    	display("3. Lister les retraits");
-    	display("4. Lister les transferts");
-    	display("0. Retour au menu transaction");
+        display("1. Lister tous les transaction");
+        display("2. Lister les depots");
+        display("3. Lister les retraits");
+        display("4. Lister les transferts");
+        display("0. Retour au menu transaction");
     }
 
     public static void barnerClient() {
@@ -145,23 +145,16 @@ public abstract class Show {
         display(transaction.toString());
     }
 
-    public static void displayTransaction(ArrayList<Transaction> transaction) {
-        display("\n\n*******************************Affichage des Transactions************************\n");
-        barnerCompte();
-        Show.display(transaction.toString());
-    }
-
     public static void displayCompte(ArrayList<Compte> compte) {
         display("\n\n*******************************Affichage des Comptes************************\n");
         barnerCompte();
-        int i = 0; 
         for (Compte compte2 : compte) {
             displayFormat(15, compte2.getNumero());
             displayFormat(15, compte2.getType());
             displayFormat(15, compte2.getDevise());
             displayFormat(15, compte2.getSolde());
             displayFormat(15, compte2.getEtat());
-            if (compte2.getProprietaire()!=null) {
+            if (compte2.getProprietaire() != null) {
                 displayFormat(15, compte2.getProprietaire().getIdClient());
             } else {
                 displayFormat(15, "");
@@ -173,7 +166,6 @@ public abstract class Show {
     public static void displayClient(ArrayList<Client> client) {
         display("\n\n*******************************Affichage des Clients************************\n");
         barnerClient();
-        int i = 0;
         for (Client client2 : client) {
             displayFormat(15, client2.getIdClient());
             displayFormat(15, client2.getNom());
@@ -181,34 +173,55 @@ public abstract class Show {
             displayFormat(15, client2.getType());
             displayFormat(15, client2.getSexe());
             displayFormat(15, client2.getAdresse());
-            if(client2.getNif()!=null) {
-            	displayFormat(15, client2.getNif());
+            if (client2.getNif() != null) {
+                displayFormat(15, client2.getNif());
+            } else {
+                displayFormat(15, "");
             }
-            else {
-            	displayFormat(15, "");
-            }
-            if(client2.getTelephone()!=null) {
-            	displayFormat(15, client2.getTelephone());
-            }
-            else {
-            	displayFormat(15, "");
+            if (client2.getTelephone() != null) {
+                displayFormat(15, client2.getTelephone());
+            } else {
+                displayFormat(15, "");
             }
             System.out.println();
         }
 
     }
 
+    /**
+     * FOnction Space String 
+     * @param length
+     * @param o
+     */
     public static void displayFormat(int length, Object o) {
         System.out.print(String.format("%-" + length + "s", o));
     }
 
-    // public static void disFormat(Object o) {
-    // System.out.print(String.format("%15s", o));
-    // }
+    // *****************************************************************************************
+    // ****************************************** LISTER LES TRANSACTIONS
+    // ***********************************************
+    // *****************************************************************************************
 
-    // public static void viewFormat(Object o) {
-    // String.format("%-15s", o);
-    // }
+    public static void displayTransaction(ArrayList<Transaction> transaction) {
+        display("\n\n*******************************Affichage des Transactions************************\n");
+        barnerTransaction();
+        for (Transaction transaction2 : transaction) {
+            displayFormat(15, transaction2.getIdTransaction());
+            displayFormat(15, transaction2.getDateTransaction());
+            displayFormat(15, transaction2.getType());
+        }
+        System.out.println();
+    }
+
+    private static void barnerTransaction() {
+
+        displayFormat(15, "idTransaction");
+        displayFormat(15, "dateTransaction");
+        displayFormat(15, "type");
+
+        display("\n-----------------------------------------------------------------------------------------------------------------");
+
+    }
 
     public static void barnerDepot() {
 
@@ -226,8 +239,7 @@ public abstract class Show {
 
     public static void displayDepot(ArrayList<Depot> depots) {
         display("\n\n*******************************Affichage des Depots************************\n");
-        barnerTransaction();
-        int i = 0;
+        barnerDepot();
         for (Depot depot2 : depots) {
             displayFormat(15, depot2.getIdTransaction());
             displayFormat(15, depot2.getDateTransaction());
@@ -257,8 +269,7 @@ public abstract class Show {
 
     public static void displayTransfert(ArrayList<Transfert> transferts) {
         display("\n\n*******************************Affichage des Transferts************************\n");
-        barnerTransaction();
-        int i = 0;
+        barnerTransfert();
 
         for (Transfert transfert2 : transferts) {
             displayFormat(15, transfert2.getIdTransaction());
@@ -270,6 +281,34 @@ public abstract class Show {
             displayFormat(15, transfert2.getMontantCrediteur());
             displayFormat(15, transfert2.getDescription());
         }
+
+    }
+
+    public static void barnerRetrait() {
+        displayFormat(15, "idTransaction");
+        displayFormat(15, "dateTransaction");
+        displayFormat(15, "type");
+        displayFormat(15, "compte");
+        displayFormat(15, "montant");
+
+
+        display("\n-----------------------------------------------------------------------------------------------------------------");
+
+    }
+
+    public static void displayRetrait(ArrayList<Retrait> retraits) {
+        display("\n\n*******************************Affichage des Retraits************************\n");
+        barnerRetrait();
+
+        for (Retrait retrait2 : retraits) {
+            displayFormat(15, retrait2.getIdTransaction());
+            displayFormat(15, retrait2.getDateTransaction());
+            displayFormat(15, retrait2.getType());
+            displayFormat(15, retrait2.getCompte());
+            displayFormat(15, retrait2.getMontant());
+        }
+        System.out.println();
+
 
     }
 

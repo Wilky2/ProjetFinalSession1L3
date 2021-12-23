@@ -114,9 +114,8 @@ public class Transfert extends Transaction {
 
 	@Override
 	public String toString() {
-		return "Transfert [compteDebiteur=" + compteDebiteur + ", montantDebiteur=" + montantDebiteur
-				+ ", compteCrediteur=" + compteCrediteur + ", montantCrediteur=" + montantCrediteur + ", description="
-				+ description + ", toString()=" + super.toString() + "]";
+		return compteDebiteur + " "  + montantDebiteur + " "  + compteCrediteur + " "  + montantCrediteur + " "  + 
+		description + " "  + super.toString();
 	}
 	
 	

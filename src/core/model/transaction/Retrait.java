@@ -59,7 +59,7 @@ public class Retrait extends Transaction{
 
 	@Override
 	public String toString() {
-		return "Retrait [compte=" + compte + ", montant=" + montant + ", toString()=" + super.toString() + "]";
+		return compte + " "  +  montant + " "  + super.toString();
 	}
 	
 }
